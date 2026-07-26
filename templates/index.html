@@ -49,22 +49,7 @@
         }
         .profile-header > * { position: relative; z-index: 1; }
 
-        .profile-avatar {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #00d4ff, #7b2ffc);
-            margin: 0 auto 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3rem;
-            box-shadow: 0 0 40px rgba(0,212,255,0.3), 0 10px 40px rgba(0,212,255,0.2);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            overflow: hidden;
-            border: 3px solid rgba(0,212,255,0.4);
-        }
+        
         .profile-avatar:hover { 
             transform: scale(1.05); 
             box-shadow: 0 0 60px rgba(0,212,255,0.5), 0 10px 60px rgba(0,212,255,0.3);
@@ -78,7 +63,7 @@
         }
 
         .profile-header h1 {
-            font-size: 2.5rem;
+            font-size: 6rem;
             background: linear-gradient(135deg, #1ef08e, #eb1beb);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -90,7 +75,7 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            font-size: 2rem;
+            font-size: 3rem;
             margin-top: 8px;
             font-weight: 500;
         }
@@ -614,7 +599,7 @@
         <!-- ===== PERFIL ===== -->
         <div class="profile-header">
             <h1 id="profileName">Meu Curriculo</h1>
-            <div class="subtitle" id="profileSubtitle">Este é um currículo interativo, clique nos botões para acessar cada categoria</div>
+            <div class="subtitle" id="profileSubtitle">Este é um currículo interativo, esta dividido em categorias e subcategorias</div>
             <div class="profile-tags" id="profileTags"></div>
         </div>
 
@@ -678,12 +663,12 @@
                 imagemFundo: STATIC_URL + "fotofundo1.png",
                 subtitulo: "Este é um currículo interativo, clique nos botões para acessar cada categoria",
                 tags: [
-                    { nome: "Python", icone: "🐍" },
-                    { nome: "selenium/Playwright", icone: "🕵️‍♀️" },
-                    { nome: "Automação", icone: "🤖" }, 
-                    { nome: "SQL", icone: "👮‍♂️" },
-                    { nome: "IA Local", icone: "🧠" },
-                    { nome: "Flask", icone: "📱" }
+                    { nome: "Minha/história", icone: "💼" },
+                    { nome: "Programador", icone: "🖥️" },
+                    { nome: "SQL", icone: "👮‍♂️" }, 
+                    { nome: "Apex_logic_Systems", icone: "🤖" },
+                    { nome: "WebStruct.Analyzer", icone: "🌍" },
+                    { nome: "Coleta.de.dados/scraping", icone: "🕵️‍♀️" }
                 ]
             },
             modulos: [
