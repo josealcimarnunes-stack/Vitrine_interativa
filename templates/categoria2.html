@@ -48,9 +48,6 @@
         transition: background-image 0.5s ease-in-out;
     }
 
-    /* Camada escura translúcida geral para cobrir a tela inteira e garantir legibilidade */
-    
-
     /* Garante que todos os sub-containers fiquem na camada superior (acima do fundo) */
     .rpg-cenario-container > * {
         position: relative;
@@ -82,7 +79,7 @@
         border-left: 4px solid #ffd700;
         border: 1px solid rgba(255, 215, 0, 0.15);
         max-height: 280px;
-        overflow-y: auto; /* Barra de rolagem para textos longos */
+        overflow-y: auto;
     }
 
     .rpg-text-box .chapter-title {
@@ -97,14 +94,14 @@
 
     .rpg-text-box .chapter-text {
         color: #51c3e6;
-        font-size: 1rem;
+        font-size: 1.1rem;
         line-height: 1.6;
         margin-bottom: 6px;
     }
 
     .rpg-text-box .chapter-question {
-        color: #00d4ff;
-        font-size: 1rem;
+        color: #e23f33;
+        font-size: 1.1rem;
         font-weight: 600;
         margin-top: 10px;
         padding-top: 8px;
@@ -184,43 +181,47 @@
         align-items: center;
     }
 
+    /* ===== ESTILO DO INVENTÁRIO - SÓ ÍCONE ===== */
     .rpg-items-collected .items-grid .item-badge {
         background: rgba(0, 212, 255, 0.1);
         border: 1px solid rgba(0, 212, 255, 0.2);
-        border-radius: 10px;
-        padding: 4px 10px;
+        border-radius: 12px;
+        padding: 8px;
         display: flex;
         align-items: center;
-        gap: 6px;
-        font-size: 0.85rem;
-        color: #d0d0d0;
+        justify-content: center;
         animation: itemAppear 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        width: 56px;
+        height: 56px;
+        transition: all 0.3s ease;
+        cursor: help;
+    }
+
+    .rpg-items-collected .items-grid .item-badge:hover {
+        transform: scale(1.15);
+        border-color: #ffd700;
+        box-shadow: 0 0 25px rgba(255, 215, 0, 0.25);
+        background: rgba(255, 215, 0, 0.08);
     }
 
     .rpg-items-collected .items-grid .item-badge .item-icon {
-        width: 28px;
-        height: 28px;
+        width: 100%;
+        height: 100%;
         border-radius: 6px;
         overflow: hidden;
         display: flex;
         align-items: center;
         justify-content: center;
         background: rgba(0, 0, 0, 0.3);
-        font-size: 1.2rem;
+        font-size: 2rem;
     }
 
     .rpg-items-collected .items-grid .item-badge .item-icon img {
         width: 100%;
         height: 100%;
         object-fit: cover;
+        border-radius: 6px;
     }
-
-    .rpg-items-collected .items-grid .item-badge .item-name {
-        font-size: 0.75rem;
-    color: #2ffc79;
-    white-space: nowrap;
-}
-    
 
     .rpg-items-collected .items-grid .empty-items {
         color: #444;
@@ -256,15 +257,15 @@
     }
 
     .rpg-options .option-btn {
-        background: #5a1ee58a;
-    border: 1px solid #59ff00;
-    border-radius: 14px;
-    padding: 16px 12px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-align: center;
-    color: #dbfc2f;
-}
+        background: #371d69ab;
+        border: 1px solid #59ff00;
+        border-radius: 14px;
+        padding: 16px 12px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-align: center;
+        color: #dbfc2f;
+    }
 
     .rpg-options .option-btn:hover {
         border-color: rgba(0, 212, 255, 0.4);
@@ -292,8 +293,8 @@
     }
 
     .rpg-options .option-btn .opt-desc {
-        font-size: 0.7rem;
-        color: #26b4b9;
+        font-size: 1rem;
+        color: #4dd8a5;
         display: block;
         margin-top: 4px;
     }
@@ -479,9 +480,9 @@
     };
 
     const headerConfig = {
-        0: { titulo: 'Jornada do Programador - Parte 1', subtitulo: 'Tudo começou com o desejo de encontrar um novo caminho e fazer a tecnologia trabalhar a meu favor. Fui atrás das Inteligências Artificiais sabendo do seu potencial, e essa busca inicial me levou ao Unity para criar jogos básicos. Para dominar a ferramenta, encarei um curso grátis de C# no YouTube. Foi aí que tudo mudou: através do C#, dei meus primeiros passos na lógica de programação usando condicionais como if e else para coletar e tratar dados. Ficando curioso com esse universo de desenvolvimento, pedi uma indicação para a IA e conheci o Selenium. Esse foi o marco zero que abriu as portas para eu explorar novas e poderosas ferramentas de programação.' },
-        1: { titulo: 'Jornada do Programador - Parte 2', subtitulo: 'A Floresta da Estrutura' },
-        2: { titulo: 'Jornada do Programador - Parte 3', subtitulo: 'O Rio dos Dados' },
+        0: { titulo: 'Jornada do Programador - Parte 1', subtitulo: 'Tudo começou com o desejo de encontrar um novo caminho profissional, ainda mais neste momento de boom tecnológico em que eu poderia fazer as IAs trabalharem a meu favor. Fui atrás de ferramentas voltadas para IA sabendo do seu potencial, e essa busca inicial me levou ao Unity para criar jogos básicos. Para dominar a ferramenta, encarei um curso grátis de C# no YouTube. Foi aí que tudo mudou: através do C#, dei meus primeiros passos na lógica de programação, usando condicionais como if e else para coletar e tratar dados. Ficando curioso com esse universo de desenvolvimento, usei a IA para conhecer novas ferramentas e explorei o ecossistema de geração de imagens — passando por Pinokio, FLUX, FORGE e ComfyUI. No entanto, ainda não conseguia ver um poder prático e imediato nelas para o que eu planejava. Até que eu conheci e usei o Selenium. Esse foi o marco zero que abriu as portas de vez para eu explorar novas e poderosas ferramentas de programação!' },
+        1: { titulo: 'Jornada do Programador - Parte 2', subtitulo: 'Após conhecer o Selenium, a I.A. me explicou que eu podia usar aquilo para coletar dados da internet, como por exemplo, extrair a cotação do dólar e do euro em tempo real. Pensei: Opa, se eu posso coletar dados úteis, posso usá-los para criar algo que atenda às dores de uma fatia de mercado ou nicho! Foi aí que fiz os meus primeiros scripts de automação. No começo, eu nem entendia direito o que estava escrevendo — era na base do famoso Ctrl+C, Ctrl+V, perguntando para a I.A. como fazia e para que funcionava. Mas ver o robô navegando sozinho na tela e trazendo a informação foi o estalo que eu precisava. Depois daquela empolgação inicial, percebi que precisava aprender mais. Decidi que era hora de abrir o capô do código e entender de verdade o que estava acontecendo: compreender a estrutura, o que significa um import, para que serve uma função, como estruturar o código e o que é uma rota. Era o início da travessia pela densa Floresta da Estrutura!' },
+        2: { titulo: 'Jornada do Programador - Parte 3', subtitulo: 'Depois do Selenium, decidi mirar em um território que todo mundo usa: o WhatsApp. Pensei: Se eu criar algo para o WhatsApp, por mais que não dê dinheiro de imediato, todo mundo tem e usa. Além disso, eu sabia que para fazer qualquer coisa funcionar ali, eu teria que aprender na marra. Foi nessa busca que conheci o Make, os Webhooks e comecei a entender a lógica por trás das integrações. A minha regra de ouro começou a se desenhar ali: eu ia atrás de um problema real para, só depois, criar a ferramenta que ia solucioná-lo. Mas a jornada não foi fácil. Enquanto mexia com o bot do WhatsApp, eu e a I.A. batemos cabeça porque eu simplesmente não conseguia achar o bendito seletor — até porque eu não sabia o que procurar e nem sabia como perguntar direito. Na tentativa de resolver isso, tive um estalo: E se eu criar um script que mapeia essa bagunça inteira? Fiz minha primeira ferramenta de mapeamento: eu digitava o nome do site e ela mapeava o site todo para mim problema é que eu tinha criado a ferramenta, mas ainda não sabia exatamente para que ela servia na prática, já que eu só queria achar um tal de seletor que a I.A. havia mencionado. Foi aí que decidi cavar mais fundo e entender o que era o DOM. Perguntei para a I.A.: Me explica direito o que é esse seletor? Vejo coisas escritas como span, números parecidos e estruturas diferentes. Ela me explicou sobre as classes. Perguntei: Classe? O que é isso? E fui entendendo. Ela me mostrou a estrutura real do DOM: a árvore de elementos onde existe pai, filho e neto, onde cada parte é um elemento com sua classe, que juntas formam uma div, que somadas formam um container, e assim por diante. Esse foi o ponto de virada na minha mente. Hoje, quando olho para uma página web, eu não vejo mais apenas uma tela estática e bonitinha; eu enxergo a infraestrutura viva por trás dela: o HTML, o JavaScript, o JSON e a engrenagem funcionando' },
         3: { titulo: 'Jornada do Programador - Parte 4', subtitulo: 'A Montanha da Lógica' },
         4: { titulo: 'Jornada do Programador - Parte 5', subtitulo: 'O Templo das Funções' },
         5: { titulo: 'Jornada do Programador - Parte 6', subtitulo: 'O Vale da Automação' },
@@ -494,28 +495,28 @@
         numero: "1",
         titulo: "CAPÍTULO 1: O DESPERTAR DO HERÓI",
         texto: `"Após voltar de uma longa jornada, o herói ao chegar ao seu lar, encontra sua rainha jogada ao chão, aos prantos, suplicando por ajuda, pois o Lorde Dobug tinha sequestrado a sua princesa, a princesa Melissa. Em um momento de angústia e desespero, o herói partiu imediatamente em busca de sua princesa para poder resgatá-lá do Tirano LordeGoBug"`,
-        pergunta: "Escolha sua classe para começar a jornada, 🎯 Cuidado, jogador! Escolha com sabedoria, pois cada decisão define seu caminho e muitas vezes não tem volta. Se fizer a escolha errada, terá que recomeçar tudo do zero. Assim como na programação: se você não pensar com cuidado e escolher as ferramentas certas, você pode perder tudo e ter que refazer o código inteiro.:",
+        pergunta: "Escolha sua classe para começar a jornada! 🎯Cuidado, jogador! Escolha com sabedoria: cada decisão define o seu caminho e, muitas vezes, não há volta. Se houver, você terá de refazer tudo de novo ou, pior, recomeçar do zero .Assim como na programação: se você não planejar com cuidado, tropeçar nos debugs e erros diários ou escolher as ferramentas erradas, pode acabar preso em um loop sem fim, girando em círculos sem achar a saída. Tenha coragem... você é forte:",
         orientacao: "🎯 Cada classe representa uma linguagem ou ferramenta!",
         campo: "classe",
         opcoes: [
-            { icone: "⚔️", nome: "Guerreiro", desc: "Python - Força e versatilidade" },
-            { icone: "🔮", nome: "Mago", desc: "SQL - Sabedoria e poder" },
-            { icone: "🏹", nome: "Arqueiro", desc: "Flask - Precisão" },
-            { icone: "🛡️", nome: "Tank", desc: "Docker - Resistência" }
+            { icone: "⚔️", nome: "Guerreiro", descricao: "Python — Força e versatilidade para encarar qualquer monstro no código." },
+            { icone: "🔮", nome: "Mago", descricao: "SQL — Sabedoria oculta e poder para manipular os dados mais profundos." },
+            { icone: "🏹", nome: "Arqueiro", descricao: "Flask — Precisão cirúrgica para acertar rotas e conexões exatas." },
+            { icone: "🛡️", nome: "Tank", descricao: "Docker — Resistência máxima para aguentar qualquer ambiente sem quebrar." }
         ]
     }, {
         id: 1,
         numero: "2",
         titulo: "CAPÍTULO 2: A FLORESTA DA ESTRUTURA",
-        texto: `"Após escolher sua classe, o Herói entrou na Floresta da Estrutura. As árvores eram como tags HTML, entrelaçadas formando uma teia complexa. Cada galho era um elemento, cada folha um atributo. Para atravessar essa floresta, ele precisava de uma ferramenta que pudesse abrir caminho e entender a hierarquia das coisas."`,
+        texto: `"E meu caro herói, assim como tudo que é bom não é fácil, tome cuidado ao utilizar os ladinos: eles usam técnicas secretas conhecidas como Selenium e Playwright. Para coletar dados da internet, eles usam mapas chamados de DOM para se locomoverem e encontrar qualquer coisa. Nesta floresta vasta, eles não se perdem pelo HTML, mesmo quando os caminhos mudam constantemente. Extrair a cotação do dólar e do euro em tempo real não será uma tarefa fácil, e sem esses dados você não poderá negociar com os Anões em Khaz-Mithril: procure por seletores persistentes, pois só assim eles te mostrarão o caminho dos minerais raros (dólar e euro)!"`,
         pergunta: "Escolha sua ferramenta para atravessar a floresta:",
         orientacao: "🌿 Cada ferramenta te ajuda a entender HTML e DOM!",
         campo: "ferramenta",
         opcoes: [
-            { icone: "🪓", nome: "Machado", desc: "DevTools - Corta caminho" },
-            { icone: "🔦", nome: "Lanterna", desc: "Inspect - Ilumina" },
-            { icone: "🗺️", nome: "Mapa", desc: "Sitemap - Mostra" },
-            { icone: "🧭", nome: "Bússola", desc: "SEO - Aponta" }
+            { icone: "🪓", nome: "Machado", descricao: "DevTools: Corta caminho direto para o código e para os problemas." },
+            { icone: "🔦", nome: "Lanterna", descricao: "Inspect: Ilumina os cantos mais escuros do DOM para revelar elementos ocultos." },
+            { icone: "🗺️", nome: "Mapa", descricao: "Sitemap: Mostra a estrutura geral do território antes de você se perder." },
+            { icone: "🧭", nome: "Bússola", descricao: "F12: Aponta exatamente para onde você precisa ir na página web." }
         ]
     }, {
         id: 2,
@@ -526,10 +527,10 @@
         orientacao: "📊 Cada transporte te ajuda a entender banco de dados e SQL!",
         campo: "transporte",
         opcoes: [
-            { icone: "🚣", nome: "Barco", desc: "SQL - Navega" },
-            { icone: "🌉", nome: "Ponte", desc: "JOINs - Conecta" },
-            { icone: "🏊", nome: "Nado", desc: "Dados profundos" },
-            { icone: "🪁", nome: "Asa", desc: "Views - Sobrevoo" }
+            { icone: "🚣", nome: "Barco", descricao: "SQL - Navega" },
+            { icone: "🌉", nome: "Ponte", descricao: "JOINs - Conecta" },
+            { icone: "🏊", nome: "Nado", descricao: "Dados profundos" },
+            { icone: "🪁", nome: "Asa", descricao: "Views - Sobrevoo" }
         ]
     }, {
         id: 3,
@@ -540,10 +541,10 @@
         orientacao: "🧠 Cada ferramenta te ajuda a entender Python e lógica!",
         campo: "escalada",
         opcoes: [
-            { icone: "🧗", nome: "Píton", desc: "Python - Escala" },
-            { icone: "🪢", nome: "Corda", desc: "Loops - Segura" },
-            { icone: "⛏️", nome: "Picareta", desc: "Condicionais" },
-            { icone: "🦅", nome: "Águia", desc: "Visão geral" }
+            { icone: "🧗", nome: "Píton", descricao: "Python - Escala" },
+            { icone: "🪢", nome: "Corda", descricao: "Loops - Segura" },
+            { icone: "⛏️", nome: "Picareta", descricao: "Condicionais" },
+            { icone: "🦅", nome: "Águia", descricao: "Visão geral" }
         ]
     }, {
         id: 4,
@@ -554,10 +555,10 @@
         orientacao: "🔐 Cada chave te ajuda a entender funções e métodos!",
         campo: "chave",
         opcoes: [
-            { icone: "🔑", nome: "Chave", desc: "Funções - Abre" },
-            { icone: "📜", nome: "Pergaminho", desc: "Doc - Revela" },
-            { icone: "💎", nome: "Gema", desc: "Decoradores" },
-            { icone: "🗝️", nome: "Código", desc: "Classes" }
+            { icone: "🔑", nome: "Chave", descricao: "Funções - Abre" },
+            { icone: "📜", nome: "Pergaminho", descricao: "Doc - Revela" },
+            { icone: "💎", nome: "Gema", descricao: "Decoradores" },
+            { icone: "🗝️", nome: "Código", descricao: "Classes" }
         ]
     }, {
         id: 5,
@@ -568,10 +569,10 @@
         orientacao: "🕵️ Cada disfarce te ajuda a entender automação!",
         campo: "disfarce",
         opcoes: [
-            { icone: "🎭", nome: "Máscara", desc: "Selenium" },
-            { icone: "🧙‍♂️", nome: "Capa", desc: "Scraping" },
-            { icone: "🕵️", nome: "Óculos", desc: "Playwright" },
-            { icone: "🎪", nome: "Disfarce", desc: "Automação" }
+            { icone: "🎭", nome: "Máscara", descricao: "Selenium" },
+            { icone: "🧙‍♂️", nome: "Capa", descricao: "Scraping" },
+            { icone: "🕵️", nome: "Óculos", descricao: "Playwright" },
+            { icone: "🎪", nome: "Disfarce", descricao: "Automação" }
         ]
     }, {
         id: 6,
@@ -582,10 +583,10 @@
         orientacao: "🔧 Cada ferramenta te ajuda a entender Flask e APIs!",
         campo: "construcao",
         opcoes: [
-            { icone: "🏗️", nome: "Martelo", desc: "Flask" },
-            { icone: "📐", nome: "Régua", desc: "Rotas" },
-            { icone: "🧱", nome: "Tijolo", desc: "Templates" },
-            { icone: "🔧", nome: "Chave", desc: "Deploy" }
+            { icone: "🏗️", nome: "Martelo", descricao: "Flask" },
+            { icone: "📐", nome: "Régua", descricao: "Rotas" },
+            { icone: "🧱", nome: "Tijolo", descricao: "Templates" },
+            { icone: "🔧", nome: "Chave", descricao: "Deploy" }
         ]
     }, {
         id: 7,
@@ -665,10 +666,11 @@
                     iconHTML = `<span style="font-size:2.5rem;">${dados.emoji || opcao.icone || '📦'}</span>`;
                 }
 
+                // ===== AQUI ESTÁ A MUDANÇA: ADICIONEI A DESCRIÇÃO =====
                 btn.innerHTML = `
                     <span class="opt-icon">${iconHTML}</span>
                     <span class="opt-name">${opcao.nome}</span>
-                    <span class="opt-desc">${opcao.desc}</span>
+                    <span class="opt-desc">${opcao.descricao || ''}</span>
                 `;
                 btn.addEventListener('click', () => selecionarOpcao(index));
                 container.appendChild(btn);
@@ -734,6 +736,7 @@
         salvarProgresso();
     }
 
+    // ===== FUNÇÃO ATUALIZAR ITENS - SÓ ÍCONE, SEM NOME =====
     function atualizarItens() {
         const grid = document.getElementById('itemsGrid');
         grid.innerHTML = '';
@@ -746,6 +749,7 @@
         estado.itens.forEach(item => {
             const badge = document.createElement('span');
             badge.className = 'item-badge';
+            badge.title = item.nome;  // tooltip com o nome ao passar o mouse
 
             const iconWrapper = document.createElement('span');
             iconWrapper.className = 'item-icon';
@@ -764,12 +768,8 @@
                 iconWrapper.textContent = dados.emoji || item.icone || '📦';
             }
 
-            const nameSpan = document.createElement('span');
-            nameSpan.className = 'item-name';
-            nameSpan.textContent = item.nome;
-
+            // ===== SÓ O ÍCONE, SEM O NOME =====
             badge.appendChild(iconWrapper);
-            badge.appendChild(nameSpan);
             grid.appendChild(badge);
         });
     }
