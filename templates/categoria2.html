@@ -1,0 +1,881 @@
+{% extends "base.html" %}
+
+{% block titulo %}🎮 RPG - Jornada do Programador{% endblock %}
+
+<!-- ===== HEADER PERSONALIZADO DO RPG ===== -->
+{% block nome %}<span id="headerTitulo">⚔️ Jornada do Programador</span>{% endblock %}
+{% block subtitulo %}<span id="headerSubtitulo">Uma aventura interativa pelo mundo da programação</span>{% endblock %}
+
+{% block tags %}
+    <span class="tag">🎮 RPG</span>
+    <span class="tag">⚔️ Aventura</span>
+    <span class="tag">🛡️ Desafio</span>
+    <span class="tag">🗡️ Herói</span>
+    <span class="tag">🏰 Jornada</span>
+    <span class="tag">🧙 Mestre</span>
+{% endblock %}
+
+{% block conteudo %}
+
+<!-- ============================================================ -->
+<!-- ===== ESTILOS EXCLUSIVOS DO RPG (TUDO AQUI!) ===== -->
+<!-- ============================================================ -->
+<style>
+    /* ===== CONTAINER ===== */
+    .rpg-container {
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+
+    /* ===== CAIXA DE TEXTO ===== */
+    .rpg-text-box {
+        background: rgba(0, 0, 0, 0.5);
+        border-radius: 12px;
+        padding: 20px 25px;
+        margin-bottom: 20px;
+        border-left: 4px solid #ffd700;
+        border: 1px solid rgba(255, 215, 0, 0.15);
+        min-height: 120px;
+        background-size: cover;
+        background-position: center;
+        position: relative;
+    }
+
+    .rpg-text-box .text-overlay {
+        background: rgba(0, 0, 0, 0.7);
+        padding: 15px 20px;
+        border-radius: 10px;
+        backdrop-filter: blur(4px);
+    }
+
+    .rpg-text-box .chapter-title {
+        font-size: 1.2rem;
+        color: #ffd700;
+        font-weight: 700;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .rpg-text-box .chapter-text {
+        color: #d0d0d0;
+        font-size: 1rem;
+        line-height: 1.6;
+        margin-bottom: 6px;
+    }
+
+    .rpg-text-box .chapter-question {
+        color: #00d4ff;
+        font-size: 1rem;
+        font-weight: 600;
+        margin-top: 6px;
+        padding-top: 8px;
+        border-top: 1px solid rgba(0, 212, 255, 0.1);
+    }
+
+    /* ===== ÁREA DO BONECO + ITENS ===== */
+    .rpg-avatar-area {
+        display: flex;
+        align-items: center;
+        gap: 30px;
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 16px;
+        padding: 20px 30px;
+        margin-bottom: 25px;
+        border: 1px solid rgba(0, 212, 255, 0.08);
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .rpg-avatar-area .avatar-box {
+        text-align: center;
+        flex-shrink: 0;
+    }
+
+    .rpg-avatar-area .avatar-box .avatar-display {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        border: 3px solid rgba(255, 215, 0, 0.3);
+        box-shadow: 0 0 40px rgba(255, 215, 0, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0, 0, 0, 0.3);
+        overflow: hidden;
+        transition: all 0.3s ease;
+        font-size: 4rem;
+    }
+
+    .rpg-avatar-area .avatar-box .avatar-display img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .rpg-avatar-area .avatar-box .avatar-label {
+        color: #ffd700;
+        font-size: 0.85rem;
+        margin-top: 8px;
+        font-weight: 600;
+    }
+
+    /* ===== ITENS COLETADOS ===== */
+    .rpg-items-collected {
+        flex: 1;
+        min-width: 200px;
+    }
+
+    .rpg-items-collected .items-label {
+        color: #888;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-bottom: 10px;
+        font-weight: 600;
+    }
+
+    .rpg-items-collected .items-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        min-height: 50px;
+        padding: 8px;
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 12px;
+        border: 1px dashed rgba(255, 255, 255, 0.05);
+        align-items: center;
+    }
+
+    .rpg-items-collected .items-grid .item-badge {
+        background: rgba(0, 212, 255, 0.1);
+        border: 1px solid rgba(0, 212, 255, 0.2);
+        border-radius: 10px;
+        padding: 4px 10px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.85rem;
+        color: #d0d0d0;
+        animation: itemAppear 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .rpg-items-collected .items-grid .item-badge .item-icon {
+        width: 28px;
+        height: 28px;
+        border-radius: 6px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0, 0, 0, 0.3);
+        font-size: 1.2rem;
+    }
+
+    .rpg-items-collected .items-grid .item-badge .item-icon img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .rpg-items-collected .items-grid .item-badge .item-name {
+        font-size: 0.75rem;
+        color: #aaa;
+        white-space: nowrap;
+    }
+
+    .rpg-items-collected .items-grid .empty-items {
+        color: #444;
+        font-size: 0.85rem;
+        font-style: italic;
+        padding: 8px 16px;
+    }
+
+    @keyframes itemAppear {
+        0% { transform: scale(0) rotate(-10deg); opacity: 0; }
+        100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+
+    /* ===== TEXTO DE ORIENTAÇÃO ===== */
+    .rpg-guidance {
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 12px;
+        padding: 16px 24px;
+        margin-bottom: 20px;
+        border-left: 3px solid #7b2ffc;
+        color: #b0b0b0;
+        font-size: 0.95rem;
+        line-height: 1.6;
+        text-align: center;
+    }
+
+    /* ===== OPÇÕES DE ESCOLHA ===== */
+    .rpg-options {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 12px;
+        margin-bottom: 20px;
+    }
+
+    .rpg-options .option-btn {
+        background: rgba(255, 255, 255, 0.04);
+        border: 2px solid rgba(255, 255, 255, 0.08);
+        border-radius: 14px;
+        padding: 16px 12px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-align: center;
+        color: #ccc;
+    }
+
+    .rpg-options .option-btn:hover {
+        border-color: rgba(0, 212, 255, 0.4);
+        background: rgba(0, 212, 255, 0.08);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    }
+
+    .rpg-options .option-btn.selected {
+        border-color: #00d4ff;
+        background: rgba(0, 212, 255, 0.15);
+        box-shadow: 0 0 30px rgba(0, 212, 255, 0.15);
+    }
+
+    .rpg-options .option-btn .opt-icon {
+        font-size: 2.5rem;
+        display: block;
+        margin-bottom: 6px;
+    }
+
+    .rpg-options .option-btn .opt-name {
+        font-weight: 600;
+        font-size: 0.95rem;
+        display: block;
+    }
+
+    .rpg-options .option-btn .opt-desc {
+        font-size: 0.7rem;
+        color: #666;
+        display: block;
+        margin-top: 4px;
+    }
+
+    .rpg-options .option-btn .opt-icon img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        object-fit: cover;
+        display: block;
+        margin: 0 auto 6px;
+    }
+
+    /* ===== BOTÃO PRÓXIMO ===== */
+    .rpg-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+        margin-top: 10px;
+    }
+
+    .rpg-actions .btn-next {
+        background: linear-gradient(135deg, #00d4ff, #7b2ffc);
+        color: #fff;
+        border: none;
+        padding: 14px 40px;
+        border-radius: 12px;
+        font-weight: 700;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 0 30px rgba(0, 212, 255, 0.15);
+        opacity: 0.4;
+        pointer-events: none;
+    }
+
+    .rpg-actions .btn-next.active {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .rpg-actions .btn-next.active:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 0 50px rgba(0, 212, 255, 0.3);
+    }
+
+    .rpg-actions .btn-reset {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        color: #888;
+        padding: 14px 24px;
+        border-radius: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .rpg-actions .btn-reset:hover {
+        background: rgba(255, 0, 0, 0.1);
+        border-color: rgba(255, 0, 0, 0.3);
+        color: #ff4444;
+    }
+
+    @media (max-width: 768px) {
+        .rpg-text-box {
+            padding: 14px 16px;
+            min-height: 80px;
+        }
+        .rpg-text-box .text-overlay {
+            padding: 10px 12px;
+        }
+        .rpg-text-box .chapter-title {
+            font-size: 1rem;
+        }
+        .rpg-text-box .chapter-text {
+            font-size: 0.9rem;
+        }
+        .rpg-avatar-area {
+            flex-direction: column;
+            padding: 16px;
+        }
+        .rpg-avatar-area .avatar-box .avatar-display {
+            width: 80px;
+            height: 80px;
+            font-size: 3rem;
+        }
+        .rpg-options {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+        .rpg-actions {
+            flex-direction: column-reverse;
+        }
+        .rpg-actions .btn-next {
+            width: 100%;
+        }
+    }
+</style>
+
+<div class="categoria-content">
+    <a href="/" class="btn-voltar">← Voltar para o índice</a>
+
+    <div class="rpg-container">
+
+        <!-- ===== CAIXA DE TEXTO ===== -->
+        <div class="rpg-text-box" id="textBox">
+            <div class="text-overlay">
+                <div class="chapter-title">
+                    <span class="icon" id="chapterIcon">⚔️</span>
+                    <span id="chapterTitle">CAPÍTULO 1: O DESPERTAR DO HERÓI</span>
+                </div>
+                <div class="chapter-text" id="chapterText">
+                    "O Herói havia deixado seu antigo vilarejo em busca de um novo propósito..."
+                </div>
+                <div class="chapter-question" id="chapterQuestion">
+                    ⚔️ Escolha sua classe para começar a jornada:
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== BONECO + ITENS ===== -->
+        <div class="rpg-avatar-area">
+            <div class="avatar-box">
+                <div class="avatar-display" id="avatarDisplay">🧑‍💻</div>
+                <div class="avatar-label" id="avatarLabel">Aventureiro</div>
+            </div>
+            <div class="rpg-items-collected">
+                <div class="items-label">🎒 ITENS COLETADOS</div>
+                <div class="items-grid" id="itemsGrid">
+                    <span class="empty-items">Nenhum item ainda...</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== ORIENTAÇÃO ===== -->
+        <div class="rpg-guidance" id="guidanceText">
+            🎯 Escolha sabiamente, pois cada decisão define seu caminho!
+        </div>
+
+        <!-- ===== OPÇÕES ===== -->
+        <div class="rpg-options" id="optionsContainer"></div>
+
+        <!-- ===== AÇÕES ===== -->
+        <div class="rpg-actions">
+            <button class="btn-reset" onclick="resetarJornada()">🔄 Recomeçar</button>
+            <button class="btn-next" id="btnNext" onclick="proximoPasso()">➡️ PRÓXIMO</button>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    // ================================================================
+    // ===== CONFIGURAÇÃO DAS IMAGENS =====
+    // ================================================================
+
+    const IMG_PATH = '/static/images/rpg/';
+
+    // ===== AVATARES =====
+    const AVATARES = {
+        'Guerreiro': { img: 'guerreiro.png', emoji: '⚔️' },
+        'Mago': { img: 'mago.png', emoji: '🔮' },
+        'Arqueiro': { img: 'arqueiro.png', emoji: '🏹' },
+        'Tank': { img: 'tank.png', emoji: '🛡️' },
+        'default': { img: '', emoji: '🧑‍💻' }
+    };
+
+    // ===== IMAGENS DOS ITENS =====
+    const IMAGENS_ITENS = {
+        'Guerreiro': { img: 'guerreiro.png', emoji: '⚔️' },
+        'Mago': { img: 'mago.png', emoji: '🔮' },
+        'Arqueiro': { img: 'arqueiro.png', emoji: '🏹' },
+        'Tank': { img: 'tank.png', emoji: '🛡️' },
+        'Machado': { img: 'machado.png', emoji: '🪓' },
+        'Lanterna': { img: 'lanterna.png', emoji: '🔦' },
+        'Mapa': { img: 'mapa.png', emoji: '🗺️' },
+        'Bússola': { img: 'bussola.png', emoji: '🧭' },
+        'Barco': { img: 'barco.png', emoji: '🚣' },
+        'Ponte': { img: 'ponte.png', emoji: '🌉' },
+        'Nado': { img: 'nado.png', emoji: '🏊' },
+        'Asa': { img: 'asa.png', emoji: '🪁' },
+        'Píton': { img: 'piton.png', emoji: '🧗' },
+        'Corda': { img: 'corda.png', emoji: '🪢' },
+        'Picareta': { img: 'picareta.png', emoji: '⛏️' },
+        'Águia': { img: 'aguia.png', emoji: '🦅' },
+        'Chave': { img: 'chave.png', emoji: '🔑' },
+        'Pergaminho': { img: 'pergaminho.png', emoji: '📜' },
+        'Gema': { img: 'gema.png', emoji: '💎' },
+        'Código': { img: 'codigo.png', emoji: '🗝️' },
+        'Máscara': { img: 'mascara.png', emoji: '🎭' },
+        'Capa': { img: 'capa.png', emoji: '🧙‍♂️' },
+        'Óculos': { img: 'oculos.png', emoji: '🕵️' },
+        'Disfarce': { img: 'disfarce.png', emoji: '🎪' },
+        'Martelo': { img: 'martelo.png', emoji: '🏗️' },
+        'Régua': { img: 'regua.png', emoji: '📐' },
+        'Tijolo': { img: 'tijolo.png', emoji: '🧱' },
+        'Chave Inglesa': { img: 'chave_inglesa.png', emoji: '🔧' }
+    };
+
+    // ================================================================
+    // ===== CONFIGURAÇÃO DO HEADER POR CAPÍTULO =====
+    // ================================================================
+
+    const headerConfig = {
+        0: { titulo: '⚔️ Jornada do Programador - Parte 1', subtitulo: 'O início da sua aventura' },
+        1: { titulo: '🌲 Jornada do Programador - Parte 2', subtitulo: 'A Floresta da Estrutura' },
+        2: { titulo: '🌊 Jornada do Programador - Parte 3', subtitulo: 'O Rio dos Dados' },
+        3: { titulo: '⛰️ Jornada do Programador - Parte 4', subtitulo: 'A Montanha da Lógica' },
+        4: { titulo: '🏛️ Jornada do Programador - Parte 5', subtitulo: 'O Templo das Funções' },
+        5: { titulo: '🤖 Jornada do Programador - Parte 6', subtitulo: 'O Vale da Automação' },
+        6: { titulo: '🏙️ Jornada do Programador - Parte 7', subtitulo: 'A Cidade da Web' },
+        7: { titulo: '🏰 Jornada do Programador - Parte 8', subtitulo: 'O Castelo do Legado - O Fim da Jornada!' }
+    };
+
+    // ================================================================
+    // ===== DADOS DO RPG (EDITÁVEIS AQUI!) =====
+    // ================================================================
+
+    const modulos = [{
+        id: 0,
+        titulo: "CAPÍTULO 1: O DESPERTAR DO HERÓI",
+        icone: "⚔️",
+        texto: `"O Herói havia deixado seu antigo vilarejo em busca de um novo propósito. Queria dominar as artes arcanas da Inteligência Artificial, mas não sabia por onde começar. Foi então que encontrou um Mestre que lhe mostrou um artefato chamado Selenium. Naquele momento, ele entendeu que sua jornada estava apenas começando."`,
+        pergunta: "⚔️ Escolha sua classe para começar a jornada:",
+        orientacao: "🎯 Cada classe representa uma linguagem ou ferramenta!",
+        campo: "classe",
+        opcoes: [
+            { icone: "⚔️", nome: "Guerreiro", desc: "Python - Força e versatilidade" },
+            { icone: "🔮", nome: "Mago", desc: "SQL - Sabedoria e poder" },
+            { icone: "🏹", nome: "Arqueiro", desc: "Flask - Precisão" },
+            { icone: "🛡️", nome: "Tank", desc: "Docker - Resistência" }
+        ]
+    }, {
+        id: 1,
+        titulo: "CAPÍTULO 2: A FLORESTA DA ESTRUTURA",
+        icone: "🌲",
+        texto: `"Após escolher sua classe, o Herói entrou na Floresta da Estrutura. As árvores eram como tags HTML, entrelaçadas formando uma teia complexa. Cada galho era um elemento, cada folha um atributo. Para atravessar essa floresta, ele precisava de uma ferramenta que pudesse abrir caminho e entender a hierarquia das coisas."`,
+        pergunta: "🪓 Escolha sua ferramenta para atravessar a floresta:",
+        orientacao: "🌿 Cada ferramenta te ajuda a entender HTML e DOM!",
+        campo: "ferramenta",
+        opcoes: [
+            { icone: "🪓", nome: "Machado", desc: "DevTools - Corta caminho" },
+            { icone: "🔦", nome: "Lanterna", desc: "Inspect - Ilumina" },
+            { icone: "🗺️", nome: "Mapa", desc: "Sitemap - Mostra" },
+            { icone: "🧭", nome: "Bússola", desc: "SEO - Aponta" }
+        ]
+    }, {
+        id: 2,
+        titulo: "CAPÍTULO 3: O RIO DOS DADOS",
+        icone: "🌊",
+        texto: `"O Herói chegou ao Rio dos Dados. Suas águas eram feitas de informações que precisavam ser organizadas. Cada gota era um dado, cada corrente era uma tabela. Para cruzar esse rio, ele precisava de um meio de transporte que pudesse navegar por esse mar de informações."`,
+        pergunta: "🚣 Escolha seu transporte para cruzar o rio:",
+        orientacao: "📊 Cada transporte te ajuda a entender banco de dados e SQL!",
+        campo: "transporte",
+        opcoes: [
+            { icone: "🚣", nome: "Barco", desc: "SQL - Navega" },
+            { icone: "🌉", nome: "Ponte", desc: "JOINs - Conecta" },
+            { icone: "🏊", nome: "Nado", desc: "Dados profundos" },
+            { icone: "🪁", nome: "Asa", desc: "Views - Sobrevoo" }
+        ]
+    }, {
+        id: 3,
+        titulo: "CAPÍTULO 4: A MONTANHA DA LÓGICA",
+        icone: "⛰️",
+        texto: `"A Montanha da Lógica se ergueu à sua frente. Seus picos eram feitos de estruturas condicionais e loops. Cada passo era uma decisão, cada escolha um caminho. Para escalar essa montanha, o Herói precisava de uma ferramenta que o ajudasse a subir e entender a lógica por trás de tudo."`,
+        pergunta: "🧗 Escolha sua ferramenta de escalada:",
+        orientacao: "🧠 Cada ferramenta te ajuda a entender Python e lógica!",
+        campo: "escalada",
+        opcoes: [
+            { icone: "🧗", nome: "Píton", desc: "Python - Escala" },
+            { icone: "🪢", nome: "Corda", desc: "Loops - Segura" },
+            { icone: "⛏️", nome: "Picareta", desc: "Condicionais" },
+            { icone: "🦅", nome: "Águia", desc: "Visão geral" }
+        ]
+    }, {
+        id: 4,
+        titulo: "CAPÍTULO 5: O TEMPLO DAS FUNÇÕES",
+        icone: "🏛️",
+        texto: `"No Templo das Funções, cada sala era um método que precisava ser executado. As portas só se abriam com a chave certa. Para avançar, o Herói precisava entender como cada função se encaixava no grande esquema das coisas."`,
+        pergunta: "🔑 Escolha sua chave para abrir as portas:",
+        orientacao: "🔐 Cada chave te ajuda a entender funções e métodos!",
+        campo: "chave",
+        opcoes: [
+            { icone: "🔑", nome: "Chave", desc: "Funções - Abre" },
+            { icone: "📜", nome: "Pergaminho", desc: "Doc - Revela" },
+            { icone: "💎", nome: "Gema", desc: "Decoradores" },
+            { icone: "🗝️", nome: "Código", desc: "Classes" }
+        ]
+    }, {
+        id: 5,
+        titulo: "CAPÍTULO 6: O VALE DA AUTOMAÇÃO",
+        icone: "🤖",
+        texto: `"O Vale da Automação era cheio de tarefas repetitivas que precisavam ser executadas sem erro. Para passar despercebido e automatizar tudo, o Herói precisava de um disfarce que o permitisse agir nas sombras e coletar informações."`,
+        pergunta: "🎭 Escolha seu disfarce para o vale:",
+        orientacao: "🕵️ Cada disfarce te ajuda a entender automação!",
+        campo: "disfarce",
+        opcoes: [
+            { icone: "🎭", nome: "Máscara", desc: "Selenium" },
+            { icone: "🧙‍♂️", nome: "Capa", desc: "Scraping" },
+            { icone: "🕵️", nome: "Óculos", desc: "Playwright" },
+            { icone: "🎪", nome: "Disfarce", desc: "Automação" }
+        ]
+    }, {
+        id: 6,
+        titulo: "CAPÍTULO 7: A CIDADE DA WEB",
+        icone: "🏙️",
+        texto: `"A Cidade da Web era onde tudo se conectava. Cada prédio era uma API, cada rua uma rota. Para construir algo grandioso, o Herói precisava de ferramentas que o ajudassem a erguer estruturas sólidas e conectar tudo."`,
+        pergunta: "🏗️ Escolha sua ferramenta de construção:",
+        orientacao: "🔧 Cada ferramenta te ajuda a entender Flask e APIs!",
+        campo: "construcao",
+        opcoes: [
+            { icone: "🏗️", nome: "Martelo", desc: "Flask" },
+            { icone: "📐", nome: "Régua", desc: "Rotas" },
+            { icone: "🧱", nome: "Tijolo", desc: "Templates" },
+            { icone: "🔧", nome: "Chave", desc: "Deploy" }
+        ]
+    }, {
+        id: 7,
+        titulo: "CAPÍTULO 8: O CASTELO DO LEGADO",
+        icone: "🏰",
+        texto: `"O Herói chegou ao Castelo do Lorde das APIs. Depois de uma longa jornada, com todas as ferramentas que coletou, estava pronto para enfrentar o desafio final. A Princesa Leia dos Dados o esperava. Sua jornada o transformou em um verdadeiro programador!"`,
+        pergunta: "🏆 Sua jornada está completa!",
+        orientacao: "🎉 Você coletou todos os itens e se tornou um herói!",
+        campo: "final",
+        opcoes: []
+    }];
+
+    // ================================================================
+    // ===== ESTADO =====
+    // ================================================================
+
+    let estado = {
+        moduloAtual: 0,
+        itens: [],
+        escolhas: {}
+    };
+
+    // ================================================================
+    // ===== FUNÇÕES =====
+    // ================================================================
+
+    function getImagemItem(nome) {
+        if (IMAGENS_ITENS[nome]) return IMAGENS_ITENS[nome];
+        for (let key in IMAGENS_ITENS) {
+            if (nome.includes(key) || key.includes(nome)) return IMAGENS_ITENS[key];
+        }
+        return { img: '', emoji: '📦' };
+    }
+
+    function getAvatar(nome) {
+        if (AVATARES[nome]) return AVATARES[nome];
+        return AVATARES['default'];
+    }
+
+    function atualizarHeader(moduloId) {
+        const config = headerConfig[moduloId] || headerConfig[0];
+        document.getElementById('headerTitulo').textContent = config.titulo;
+        document.getElementById('headerSubtitulo').textContent = config.subtitulo;
+    }
+
+    function renderizarModulo() {
+        const modulo = modulos[estado.moduloAtual];
+        if (!modulo) return;
+
+        // ===== ATUALIZA HEADER =====
+        atualizarHeader(modulo.id);
+
+        // ===== CAIXA DE TEXTO =====
+        const textBox = document.getElementById('textBox');
+        const fundoImg = IMG_PATH + `capitulo${modulo.id + 1}_fundo.png`;
+        const imgTest = new Image();
+        imgTest.onload = function() {
+            textBox.style.backgroundImage = `url('${fundoImg}')`;
+        };
+        imgTest.onerror = function() {
+            textBox.style.backgroundImage = '';
+        };
+        imgTest.src = fundoImg;
+
+        document.getElementById('chapterIcon').textContent = modulo.icone;
+        document.getElementById('chapterTitle').textContent = modulo.titulo;
+        document.getElementById('chapterText').textContent = modulo.texto;
+        document.getElementById('chapterQuestion').textContent = modulo.pergunta;
+        document.getElementById('guidanceText').textContent = modulo.orientacao;
+
+        // ===== OPÇÕES =====
+        const container = document.getElementById('optionsContainer');
+        container.innerHTML = '';
+
+        if (modulo.opcoes && modulo.opcoes.length > 0) {
+            modulo.opcoes.forEach((opcao, index) => {
+                const btn = document.createElement('div');
+                btn.className = 'option-btn';
+                btn.dataset.index = index;
+
+                const dados = getImagemItem(opcao.nome);
+                let iconHTML = '';
+                if (dados.img) {
+                    iconHTML = `<img src="${IMG_PATH + dados.img}" alt="${opcao.nome}" onerror="this.style.display='none';this.parentElement.innerHTML='<span style=\\'font-size:2.5rem;\\'>${dados.emoji || opcao.icone || '📦'}</span>'">`;
+                } else {
+                    iconHTML = `<span style="font-size:2.5rem;">${dados.emoji || opcao.icone || '📦'}</span>`;
+                }
+
+                btn.innerHTML = `
+                    <span class="opt-icon">${iconHTML}</span>
+                    <span class="opt-name">${opcao.nome}</span>
+                    <span class="opt-desc">${opcao.desc}</span>
+                `;
+                btn.addEventListener('click', () => selecionarOpcao(index));
+                container.appendChild(btn);
+            });
+        } else {
+            const msg = document.createElement('div');
+            msg.style.cssText = 'grid-column:1/-1; text-align:center; color:#ffd700; font-size:1.2rem; padding:20px;';
+            msg.textContent = '🎉 Parabéns! Você completou sua jornada!';
+            container.appendChild(msg);
+            document.getElementById('btnNext').textContent = '🏆 FINALIZAR';
+        }
+
+        // ===== BOTÃO =====
+        const btnNext = document.getElementById('btnNext');
+        btnNext.classList.remove('active');
+
+        if (estado.escolhas[modulo.campo]) {
+            const valor = estado.escolhas[modulo.campo];
+            const botoes = container.querySelectorAll('.option-btn');
+            botoes.forEach((btn, idx) => {
+                if (modulo.opcoes[idx] && modulo.opcoes[idx].nome === valor) {
+                    btn.classList.add('selected');
+                    btnNext.classList.add('active');
+                }
+            });
+        }
+
+        atualizarItens();
+        atualizarAvatar();
+    }
+
+    function selecionarOpcao(index) {
+        const modulo = modulos[estado.moduloAtual];
+        const opcao = modulo.opcoes[index];
+        if (!opcao) return;
+
+        const botoes = document.querySelectorAll('.option-btn');
+        botoes.forEach(btn => btn.classList.remove('selected'));
+        botoes[index].classList.add('selected');
+
+        estado.escolhas[modulo.campo] = opcao.nome;
+
+        const jaExiste = estado.itens.some(item => item.campo === modulo.campo);
+        if (!jaExiste) {
+            estado.itens.push({
+                icone: opcao.icone,
+                nome: opcao.nome,
+                campo: modulo.campo
+            });
+        } else {
+            const idx = estado.itens.findIndex(item => item.campo === modulo.campo);
+            if (idx !== -1) {
+                estado.itens[idx] = {
+                    icone: opcao.icone,
+                    nome: opcao.nome,
+                    campo: modulo.campo
+                };
+            }
+        }
+
+        atualizarItens();
+        atualizarAvatar();
+        document.getElementById('btnNext').classList.add('active');
+        salvarProgresso();
+    }
+
+    function atualizarItens() {
+        const grid = document.getElementById('itemsGrid');
+        grid.innerHTML = '';
+
+        if (estado.itens.length === 0) {
+            grid.innerHTML = '<span class="empty-items">Nenhum item ainda...</span>';
+            return;
+        }
+
+        estado.itens.forEach(item => {
+            const badge = document.createElement('span');
+            badge.className = 'item-badge';
+
+            const iconWrapper = document.createElement('span');
+            iconWrapper.className = 'item-icon';
+
+            const dados = getImagemItem(item.nome);
+            if (dados.img) {
+                const img = document.createElement('img');
+                img.src = IMG_PATH + dados.img;
+                img.alt = item.nome;
+                img.onerror = function() {
+                    this.style.display = 'none';
+                    this.parentElement.textContent = dados.emoji || item.icone || '📦';
+                };
+                iconWrapper.appendChild(img);
+            } else {
+                iconWrapper.textContent = dados.emoji || item.icone || '📦';
+            }
+
+            const nameSpan = document.createElement('span');
+            nameSpan.className = 'item-name';
+            nameSpan.textContent = item.nome;
+
+            badge.appendChild(iconWrapper);
+            badge.appendChild(nameSpan);
+            grid.appendChild(badge);
+        });
+    }
+
+    function atualizarAvatar() {
+        const display = document.getElementById('avatarDisplay');
+        const label = document.getElementById('avatarLabel');
+
+        const classe = estado.escolhas['classe'] || 'Aventureiro';
+        const avatar = getAvatar(classe);
+
+        display.innerHTML = '';
+
+        if (avatar.img) {
+            const img = document.createElement('img');
+            img.src = IMG_PATH + avatar.img;
+            img.alt = classe;
+            img.onerror = function() {
+                this.style.display = 'none';
+                this.parentElement.textContent = avatar.emoji || '🧑‍💻';
+            };
+            display.appendChild(img);
+        } else {
+            display.textContent = avatar.emoji || '🧑‍💻';
+        }
+
+        label.textContent = classe;
+    }
+
+    function proximoPasso() {
+        const btn = document.getElementById('btnNext');
+        if (!btn.classList.contains('active')) return;
+
+        const modulo = modulos[estado.moduloAtual];
+        if (modulo.opcoes.length === 0) {
+            showToast('🏆 Jornada concluída com sucesso!', 'success');
+            return;
+        }
+
+        if (estado.moduloAtual < modulos.length - 1) {
+            estado.moduloAtual++;
+            renderizarModulo();
+            document.querySelector('.categoria-content').scrollIntoView({ behavior: 'smooth' });
+        } else {
+            showToast('🏆 Você completou toda a jornada!', 'success');
+        }
+
+        salvarProgresso();
+    }
+
+    function resetarJornada() {
+        if (!confirm('Deseja realmente recomeçar sua jornada?')) return;
+
+        estado = {
+            moduloAtual: 0,
+            itens: [],
+            escolhas: {}
+        };
+
+        renderizarModulo();
+        salvarProgresso();
+        showToast('🔄 Jornada reiniciada!', 'info');
+    }
+
+    function salvarProgresso() {
+        try {
+            localStorage.setItem('rpg_jornada', JSON.stringify(estado));
+        } catch (e) {
+            console.warn('Não foi possível salvar o progresso');
+        }
+    }
+
+    function carregarProgresso() {
+        try {
+            const dados = localStorage.getItem('rpg_jornada');
+            if (dados) {
+                const parsed = JSON.parse(dados);
+                if (parsed.moduloAtual !== undefined && parsed.itens && parsed.escolhas) {
+                    estado = parsed;
+                    return true;
+                }
+            }
+        } catch (e) {
+            console.warn('Não foi possível carregar o progresso');
+        }
+        return false;
+    }
+
+    // ================================================================
+    // ===== INIT =====
+    // ================================================================
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const carregado = carregarProgresso();
+
+        if (!carregado) {
+            estado = {
+                moduloAtual: 0,
+                itens: [],
+                escolhas: {}
+            };
+        }
+
+        renderizarModulo();
+
+        const primeiroModulo = modulos[0];
+        if (estado.escolhas[primeiroModulo.campo]) {
+            document.getElementById('btnNext').classList.add('active');
+        }
+    });
+</script>
+
+{% endblock %}

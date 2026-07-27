@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block titulo %}🤖 Projetos{% endblock %}
+{% block nome %}Meus Projetos{% endblock %}
+{% block subtitulo %}Projetos em ação{% endblock %}
+
+{% block conteudo %}
+<div class="categoria-content">
+    <a href="/" class="btn-voltar">← Voltar para o índice</a>
+    
+    <h2>🤖 Projetos em Ação</h2>
+    
+    <div class="sub-items-grid">
+        <div class="sub-item-card" onclick="abrirGIF('/static/images/gifs/selenium.gif', 'Selenium - Automação de navegador')" 
+             style="background-image: url('/static/images/subitens/c3_sub1.png');">
+            <span class="sub-icon">🤖</span>
+            <span class="sub-label">Selenium</span>
+        </div>
+        <div class="sub-item-card" onclick="abrirGIF('/static/images/gifs/whatsapp_bot.gif', 'WhatsApp Bot - Automação de mensagens')" 
+             style="background-image: url('/static/images/subitens/c3_sub2.png');">
+            <span class="sub-icon">📱</span>
+            <span class="sub-label">WhatsApp Bot</span>
+        </div>
+        <div class="sub-item-card" onclick="abrirGIF('/static/images/gifs/scraping.gif', 'Scraping - Coleta de dados')" 
+             style="background-image: url('/static/images/subitens/c3_sub3.png');">
+            <span class="sub-icon">🕵️</span>
+            <span class="sub-label">Scraping</span>
+        </div>
+        <div class="sub-item-card" onclick="abrirGIF('/static/images/gifs/dashboard.gif', 'Dashboard - Visualização de dados')" 
+             style="background-image: url('/static/images/subitens/c3_sub4.png');">
+            <span class="sub-icon">📊</span>
+            <span class="sub-label">Dashboard</span>
+        </div>
+        <div class="sub-item-card" onclick="abrirGIF('/static/images/gifs/api_rest.gif', 'API REST - Integração de sistemas')" 
+             style="background-image: url('/static/images/subitens/c3_sub5.png');">
+            <span class="sub-icon">🔌</span>
+            <span class="sub-label">API REST</span>
+        </div>
+        <div class="sub-item-card" onclick="abrirGIF('/static/images/gifs/telegram_bot.gif', 'Telegram Bot - Automação de chat')" 
+             style="background-image: url('/static/images/subitens/c3_sub6.png');">
+            <span class="sub-icon">🤖</span>
+            <span class="sub-label">Telegram Bot</span>
+        </div>
+        <div class="sub-item-card" onclick="abrirGIF('/static/images/gifs/automacao.gif', 'Automação - Processos inteligentes')" 
+             style="background-image: url('/static/images/subitens/c3_sub7.png');">
+            <span class="sub-icon">⚙️</span>
+            <span class="sub-label">Automação</span>
+        </div>
+        <div class="sub-item-card" onclick="abrirGIF('/static/images/gifs/web_scraping.gif', 'Web Scraping - Extração de dados')" 
+             style="background-image: url('/static/images/subitens/c3_sub8.png');">
+            <span class="sub-icon">🌐</span>
+            <span class="sub-label">Web Scraping</span>
+        </div>
+    </div>
+</div>
+
+<!-- ===== MODAL DO GIF ===== -->
+<div id="gifModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index:9999; justify-content:center; align-items:center; padding:20px;" onclick="fecharGIF(event)">
+    <div style="max-width:800px; width:100%; background:rgba(20,20,42,0.95); border-radius:24px; padding:30px; border:2px solid rgba(0,212,255,0.2);" onclick="event.stopPropagation()">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+            <h3 id="gifModalTitle" style="color:#00d4ff;">Projeto</h3>
+            <button onclick="fecharGIF()" style="background:none; border:none; color:#888; font-size:2rem; cursor:pointer;">✕</button>
+        </div>
+        <div class="gif-viewer">
+            <img id="gifModalImage" src="" alt="GIF do projeto" style="width:100%; border-radius:12px;">
+            <div class="gif-caption" id="gifModalCaption">Projeto em ação</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function abrirGIF(src, titulo) {
+        document.getElementById('gifModalImage').src = src;
+        document.getElementById('gifModalTitle').textContent = titulo;
+        document.getElementById('gifModalCaption').textContent = titulo + ' - Em ação!';
+        document.getElementById('gifModal').style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+    
+    function fecharGIF(event) {
+        if (event && event.target !== event.currentTarget) return;
+        document.getElementById('gifModal').style.display = 'none';
+        document.body.style.overflow = '';
+    }
+    
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') fecharGIF();
+    });
+</script>
+{% endblock %}
