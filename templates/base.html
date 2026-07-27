@@ -11,7 +11,7 @@
             background: url('/static/images/fundos/fundo_pagina.png') no-repeat center center fixed;
             background-size: cover;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: #e0e0e0;
+            color: #56cfbb;
             min-height: 100vh;
             padding: 20px;
         }
@@ -25,7 +25,7 @@
             background-size: cover;
             border-radius: 24px;
             margin-bottom: 40px;
-            border: 2px solid rgba(0, 212, 255, 0.25);
+            border: 2px solid rgba(219, 72, 170, 0.25);
             box-shadow: 0 0 30px rgba(0, 212, 255, 0.1), 0 4px 40px rgba(0, 0, 0, 0.3);
             position: relative;
             min-height: 300px;
@@ -36,7 +36,7 @@
             transition: all 0.3s ease;
         }
         .profile-header:hover {
-            border-color: rgba(0, 212, 255, 0.5);
+            border-color: rgba(84, 201, 48, 0.5);
             box-shadow: 0 0 50px rgba(0, 212, 255, 0.2), 0 8px 60px rgba(0, 0, 0, 0.4);
         }
         .profile-header::before {
@@ -50,8 +50,8 @@
         .profile-header > * { position: relative; z-index: 1; }
 
         .profile-header h1 {
-            font-size: 5rem;
-            background: linear-gradient(135deg, #1ef08e, #eb1beb);
+            font-size: 4rem;
+            background: linear-gradient(135deg, #bb0e34, #eb1beb);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -62,7 +62,7 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            font-size: 2.5rem;
+            font-size: 1.2rem;
             margin-top: 8px;
             font-weight: 500;
         }
@@ -178,7 +178,7 @@
             background-position: center;
             background-color: rgba(255,255,255,0.03);
             text-decoration: none;
-            color: #fff;
+            color: #42b5bd;
         }
         .module-card::before {
             content: '';
@@ -242,7 +242,7 @@
             position: relative;
             overflow: hidden;
             text-decoration: none;
-            color: #fff;
+            color: #2db97f;
         }
         .sub-item-card::before {
             content: '';
@@ -261,7 +261,7 @@
         }
         .sub-item-card .sub-label {
             font-weight: 600; 
-            color: #fff;
+            color: #22a9ad;
             font-size: 0.9rem;
             position: relative;
             z-index: 1;
@@ -291,7 +291,7 @@
             border: 2px solid rgba(0, 212, 255, 0.3);
             padding: 14px 28px;
             border-radius: 50px;
-            color: #fff;
+            color: #73c527;
             font-weight: 600;
             font-size: 0.95rem;
             cursor: pointer;
@@ -337,22 +337,19 @@
     <div class="container">
         <!-- ===== HEADER ===== -->
         <div class="profile-header">
-            <div class="profile-avatar">
-                {% block avatar %}🧑‍💻{% endblock %}
-            </div>
-            <h1>{% block nome %}Meu Curriculo{% endblock %}</h1>
-            <div class="subtitle">{% block subtitulo %}Currículo Interativo{% endblock %}</div>
-            <div class="profile-tags">
-                {% block tags %}
-                    <span class="tag">💼 Minha História</span>
-                    <span class="tag">🖥️ Programador</span>
-                    <span class="tag">👮‍♂️ SQL</span>
-                    <span class="tag">🤖 Apex Logic Systems</span>
-                    <span class="tag">🌍 WebStruct.Analyzer</span>
-                    <span class="tag">🕵️ Coleta de dados</span>
-                {% endblock %}
-            </div>
-        </div>
+    <h1>{% block nome %}Meu Curriculo{% endblock %}</h1>
+    <div class="subtitle">{% block subtitulo %}Currículo Interativo{% endblock %}</div>
+    <div class="profile-tags">
+        {% block tags %}
+            <span class="tag">💼 Minha História</span>
+            <span class="tag">🖥️ Programador</span>
+            <span class="tag">👮‍♂️ SQL</span>
+            <span class="tag">🤖 Apex Logic Systems</span>
+            <span class="tag">🌍 WebStruct.Analyzer</span>
+            <span class="tag">🕵️ Coleta de dados</span>
+        {% endblock %}
+    </div>
+</div>
 
         <!-- ===== CONTEÚDO PRINCIPAL ===== -->
         {% block conteudo %}{% endblock %}

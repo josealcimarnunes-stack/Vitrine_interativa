@@ -3,7 +3,7 @@
 {% block titulo %}🎮 RPG - Jornada do Programador{% endblock %}
 
 <!-- ===== HEADER PERSONALIZADO DO RPG ===== -->
-{% block nome %}<span id="headerTitulo">⚔️ Jornada do Programador</span>{% endblock %}
+{% block nome %}<span id="headerTitulo">Jornada do Programador</span>{% endblock %}
 {% block subtitulo %}<span id="headerSubtitulo">Uma aventura interativa pelo mundo da programação</span>{% endblock %}
 
 {% block tags %}
@@ -18,34 +18,71 @@
 {% block conteudo %}
 
 <!-- ============================================================ -->
-<!-- ===== ESTILOS EXCLUSIVOS DO RPG (TUDO AQUI!) ===== -->
+<!-- ===== ESTILOS EXCLUSIVOS DO RPG (CONTAINER MESTRE FULLSCREEN) ===== -->
 <!-- ============================================================ -->
 <style>
-    /* ===== CONTAINER ===== */
-    .rpg-container {
-        max-width: 1000px;
-        margin: 0 auto;
+    /* Faz a página inteira se acomodar sem margens sobrando nas pontas */
+    body {
+        margin: 0;
+        padding: 0;
     }
 
-    /* ===== CAIXA DE TEXTO ===== */
+    .categoria-content {
+        max-width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    /* ===== CONTAINER MESTRE (ABRANGE A TELA INTEIRA) ===== -->
+    .rpg-cenario-container {
+        width: 100vw;
+        min-height: 100vh;
+        margin: 0;
+        padding: 40px 60px;
+        box-sizing: border-box;
+        background-size: cover !important;
+        background-position: center !important;
+        background-repeat: no-repeat !important;
+        position: relative;
+        overflow-x: hidden;
+        transition: background-image 0.5s ease-in-out;
+    }
+
+    /* Camada escura translúcida geral para cobrir a tela inteira e garantir legibilidade */
+    
+
+    /* Garante que todos os sub-containers fiquem na camada superior (acima do fundo) */
+    .rpg-cenario-container > * {
+        position: relative;
+        z-index: 2;
+        max-width: 1100px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    /* Botão voltar ajustado para dentro do container mestre */
+    .rpg-cenario-container .btn-voltar {
+        display: inline-block;
+        margin-bottom: 20px;
+        color: #00d4ff;
+        text-decoration: none;
+        font-weight: 600;
+        transition: opacity 0.2s;
+    }
+    .rpg-cenario-container .btn-voltar:hover {
+        opacity: 0.8;
+    }
+
+    /* ===== CAIXA DE TEXTO / HISTÓRIA ===== */
     .rpg-text-box {
-        background: rgba(0, 0, 0, 0.5);
+        background: rgba(0, 0, 0, 0.6);
         border-radius: 12px;
         padding: 20px 25px;
         margin-bottom: 20px;
         border-left: 4px solid #ffd700;
         border: 1px solid rgba(255, 215, 0, 0.15);
-        min-height: 120px;
-        background-size: cover;
-        background-position: center;
-        position: relative;
-    }
-
-    .rpg-text-box .text-overlay {
-        background: rgba(0, 0, 0, 0.7);
-        padding: 15px 20px;
-        border-radius: 10px;
-        backdrop-filter: blur(4px);
+        max-height: 280px;
+        overflow-y: auto; /* Barra de rolagem para textos longos */
     }
 
     .rpg-text-box .chapter-title {
@@ -59,7 +96,7 @@
     }
 
     .rpg-text-box .chapter-text {
-        color: #d0d0d0;
+        color: #51c3e6;
         font-size: 1rem;
         line-height: 1.6;
         margin-bottom: 6px;
@@ -69,7 +106,7 @@
         color: #00d4ff;
         font-size: 1rem;
         font-weight: 600;
-        margin-top: 6px;
+        margin-top: 10px;
         padding-top: 8px;
         border-top: 1px solid rgba(0, 212, 255, 0.1);
     }
@@ -79,7 +116,7 @@
         display: flex;
         align-items: center;
         gap: 30px;
-        background: rgba(0, 0, 0, 0.3);
+        background: rgba(0, 0, 0, 0.4);
         border-radius: 16px;
         padding: 20px 30px;
         margin-bottom: 25px;
@@ -97,14 +134,13 @@
         width: 120px;
         height: 120px;
         border-radius: 50%;
-        border: 3px solid rgba(255, 215, 0, 0.3);
-        box-shadow: 0 0 40px rgba(255, 215, 0, 0.1);
+        border: 3px solid rgba(20, 241, 105, 0.863);
+        box-shadow: 0 0 40px rgba(190, 61, 202, 0.1);
         display: flex;
         align-items: center;
         justify-content: center;
         background: rgba(0, 0, 0, 0.3);
         overflow: hidden;
-        transition: all 0.3s ease;
         font-size: 4rem;
     }
 
@@ -128,8 +164,8 @@
     }
 
     .rpg-items-collected .items-label {
-        color: #888;
-        font-size: 0.8rem;
+        color: #52bb28;
+        font-size: 1.8rem;
         text-transform: uppercase;
         letter-spacing: 2px;
         margin-bottom: 10px;
@@ -181,9 +217,10 @@
 
     .rpg-items-collected .items-grid .item-badge .item-name {
         font-size: 0.75rem;
-        color: #aaa;
-        white-space: nowrap;
-    }
+    color: #2ffc79;
+    white-space: nowrap;
+}
+    
 
     .rpg-items-collected .items-grid .empty-items {
         color: #444;
@@ -199,12 +236,12 @@
 
     /* ===== TEXTO DE ORIENTAÇÃO ===== */
     .rpg-guidance {
-        background: rgba(0, 0, 0, 0.2);
+        background: rgba(0, 0, 0, 0.3);
         border-radius: 12px;
         padding: 16px 24px;
         margin-bottom: 20px;
         border-left: 3px solid #7b2ffc;
-        color: #b0b0b0;
+        color: #00ffc6;
         font-size: 0.95rem;
         line-height: 1.6;
         text-align: center;
@@ -219,15 +256,15 @@
     }
 
     .rpg-options .option-btn {
-        background: rgba(255, 255, 255, 0.04);
-        border: 2px solid rgba(255, 255, 255, 0.08);
-        border-radius: 14px;
-        padding: 16px 12px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        text-align: center;
-        color: #ccc;
-    }
+        background: #5a1ee58a;
+    border: 1px solid #59ff00;
+    border-radius: 14px;
+    padding: 16px 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    color: #dbfc2f;
+}
 
     .rpg-options .option-btn:hover {
         border-color: rgba(0, 212, 255, 0.4);
@@ -256,7 +293,7 @@
 
     .rpg-options .option-btn .opt-desc {
         font-size: 0.7rem;
-        color: #666;
+        color: #26b4b9;
         display: block;
         margin-top: 4px;
     }
@@ -270,7 +307,7 @@
         margin: 0 auto 6px;
     }
 
-    /* ===== BOTÃO PRÓXIMO ===== */
+    /* ===== BOTÕES DE AÇÃO ===== */
     .rpg-actions {
         display: flex;
         justify-content: flex-end;
@@ -317,22 +354,12 @@
     .rpg-actions .btn-reset:hover {
         background: rgba(255, 0, 0, 0.1);
         border-color: rgba(255, 0, 0, 0.3);
-        color: #ff4444;
+        color: #54ff44;
     }
 
     @media (max-width: 768px) {
-        .rpg-text-box {
-            padding: 14px 16px;
-            min-height: 80px;
-        }
-        .rpg-text-box .text-overlay {
-            padding: 10px 12px;
-        }
-        .rpg-text-box .chapter-title {
-            font-size: 1rem;
-        }
-        .rpg-text-box .chapter-text {
-            font-size: 0.9rem;
+        .rpg-cenario-container {
+            padding: 20px 15px;
         }
         .rpg-avatar-area {
             flex-direction: column;
@@ -356,56 +383,53 @@
     }
 </style>
 
-<div class="categoria-content">
+<!-- ===== CONTAINER MESTRE (ABRANGENDO TUDO) ===== -->
+<div class="rpg-cenario-container" id="cenarioContainer">
+
     <a href="/" class="btn-voltar">← Voltar para o índice</a>
 
-    <div class="rpg-container">
-
-        <!-- ===== CAIXA DE TEXTO ===== -->
-        <div class="rpg-text-box" id="textBox">
-            <div class="text-overlay">
-                <div class="chapter-title">
-                    <span class="icon" id="chapterIcon">⚔️</span>
-                    <span id="chapterTitle">CAPÍTULO 1: O DESPERTAR DO HERÓI</span>
-                </div>
-                <div class="chapter-text" id="chapterText">
-                    "O Herói havia deixado seu antigo vilarejo em busca de um novo propósito..."
-                </div>
-                <div class="chapter-question" id="chapterQuestion">
-                    ⚔️ Escolha sua classe para começar a jornada:
-                </div>
-            </div>
+    <!-- ===== CAIXA DE TEXTO ===== -->
+    <div class="rpg-text-box">
+        <div class="chapter-title">
+            <span id="chapterNumber">1</span>
+            <span id="chapterTitle">CAPÍTULO 1: O DESPERTAR DO HERÓI</span>
         </div>
-
-        <!-- ===== BONECO + ITENS ===== -->
-        <div class="rpg-avatar-area">
-            <div class="avatar-box">
-                <div class="avatar-display" id="avatarDisplay">🧑‍💻</div>
-                <div class="avatar-label" id="avatarLabel">Aventureiro</div>
-            </div>
-            <div class="rpg-items-collected">
-                <div class="items-label">🎒 ITENS COLETADOS</div>
-                <div class="items-grid" id="itemsGrid">
-                    <span class="empty-items">Nenhum item ainda...</span>
-                </div>
-            </div>
+        <div class="chapter-text" id="chapterText">
+            "O Herói havia deixado seu antigo vilarejo em busca de um novo propósito..."
         </div>
-
-        <!-- ===== ORIENTAÇÃO ===== -->
-        <div class="rpg-guidance" id="guidanceText">
-            🎯 Escolha sabiamente, pois cada decisão define seu caminho!
+        <div class="chapter-question" id="chapterQuestion">
+            Escolha sua classe para começar a jornada:
         </div>
-
-        <!-- ===== OPÇÕES ===== -->
-        <div class="rpg-options" id="optionsContainer"></div>
-
-        <!-- ===== AÇÕES ===== -->
-        <div class="rpg-actions">
-            <button class="btn-reset" onclick="resetarJornada()">🔄 Recomeçar</button>
-            <button class="btn-next" id="btnNext" onclick="proximoPasso()">➡️ PRÓXIMO</button>
-        </div>
-
     </div>
+
+    <!-- ===== BONECO + ITENS ===== -->
+    <div class="rpg-avatar-area">
+        <div class="avatar-box">
+            <div class="avatar-display" id="avatarDisplay"></div>
+            <div class="avatar-label" id="avatarLabel">Aventureiro</div>
+        </div>
+        <div class="rpg-items-collected">
+            <div class="items-label">💰 ITENS COLETADOS</div>
+            <div class="items-grid" id="itemsGrid">
+                <span class="empty-items">Nenhum item ainda...</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== ORIENTAÇÃO ===== -->
+    <div class="rpg-guidance" id="guidanceText">
+        🎯 Escolha sabiamente, pois cada decisão define seu caminho!
+    </div>
+
+    <!-- ===== OPÇÕES ===== -->
+    <div class="rpg-options" id="optionsContainer"></div>
+
+    <!-- ===== AÇÕES ===== -->
+    <div class="rpg-actions">
+        <button class="btn-reset" onclick="resetarJornada()">🔄 Recomeçar</button>
+        <button class="btn-next" id="btnNext" onclick="proximoPasso()">➡️ PRÓXIMO</button>
+    </div>
+
 </div>
 
 <script>
@@ -415,7 +439,6 @@
 
     const IMG_PATH = '/static/images/rpg/';
 
-    // ===== AVATARES =====
     const AVATARES = {
         'Guerreiro': { img: 'guerreiro.png', emoji: '⚔️' },
         'Mago': { img: 'mago.png', emoji: '🔮' },
@@ -424,7 +447,6 @@
         'default': { img: '', emoji: '🧑‍💻' }
     };
 
-    // ===== IMAGENS DOS ITENS =====
     const IMAGENS_ITENS = {
         'Guerreiro': { img: 'guerreiro.png', emoji: '⚔️' },
         'Mago': { img: 'mago.png', emoji: '🔮' },
@@ -456,31 +478,23 @@
         'Chave Inglesa': { img: 'chave_inglesa.png', emoji: '🔧' }
     };
 
-    // ================================================================
-    // ===== CONFIGURAÇÃO DO HEADER POR CAPÍTULO =====
-    // ================================================================
-
     const headerConfig = {
-        0: { titulo: '⚔️ Jornada do Programador - Parte 1', subtitulo: 'O início da sua aventura' },
-        1: { titulo: '🌲 Jornada do Programador - Parte 2', subtitulo: 'A Floresta da Estrutura' },
-        2: { titulo: '🌊 Jornada do Programador - Parte 3', subtitulo: 'O Rio dos Dados' },
-        3: { titulo: '⛰️ Jornada do Programador - Parte 4', subtitulo: 'A Montanha da Lógica' },
-        4: { titulo: '🏛️ Jornada do Programador - Parte 5', subtitulo: 'O Templo das Funções' },
-        5: { titulo: '🤖 Jornada do Programador - Parte 6', subtitulo: 'O Vale da Automação' },
-        6: { titulo: '🏙️ Jornada do Programador - Parte 7', subtitulo: 'A Cidade da Web' },
-        7: { titulo: '🏰 Jornada do Programador - Parte 8', subtitulo: 'O Castelo do Legado - O Fim da Jornada!' }
+        0: { titulo: 'Jornada do Programador - Parte 1', subtitulo: 'Tudo começou com o desejo de encontrar um novo caminho e fazer a tecnologia trabalhar a meu favor. Fui atrás das Inteligências Artificiais sabendo do seu potencial, e essa busca inicial me levou ao Unity para criar jogos básicos. Para dominar a ferramenta, encarei um curso grátis de C# no YouTube. Foi aí que tudo mudou: através do C#, dei meus primeiros passos na lógica de programação usando condicionais como if e else para coletar e tratar dados. Ficando curioso com esse universo de desenvolvimento, pedi uma indicação para a IA e conheci o Selenium. Esse foi o marco zero que abriu as portas para eu explorar novas e poderosas ferramentas de programação.' },
+        1: { titulo: 'Jornada do Programador - Parte 2', subtitulo: 'A Floresta da Estrutura' },
+        2: { titulo: 'Jornada do Programador - Parte 3', subtitulo: 'O Rio dos Dados' },
+        3: { titulo: 'Jornada do Programador - Parte 4', subtitulo: 'A Montanha da Lógica' },
+        4: { titulo: 'Jornada do Programador - Parte 5', subtitulo: 'O Templo das Funções' },
+        5: { titulo: 'Jornada do Programador - Parte 6', subtitulo: 'O Vale da Automação' },
+        6: { titulo: 'Jornada do Programador - Parte 7', subtitulo: 'A Cidade da Web' },
+        7: { titulo: 'Jornada do Programador - Parte 8', subtitulo: 'O Castelo do Legado - O Fim da Jornada!' }
     };
-
-    // ================================================================
-    // ===== DADOS DO RPG (EDITÁVEIS AQUI!) =====
-    // ================================================================
 
     const modulos = [{
         id: 0,
+        numero: "1",
         titulo: "CAPÍTULO 1: O DESPERTAR DO HERÓI",
-        icone: "⚔️",
-        texto: `"O Herói havia deixado seu antigo vilarejo em busca de um novo propósito. Queria dominar as artes arcanas da Inteligência Artificial, mas não sabia por onde começar. Foi então que encontrou um Mestre que lhe mostrou um artefato chamado Selenium. Naquele momento, ele entendeu que sua jornada estava apenas começando."`,
-        pergunta: "⚔️ Escolha sua classe para começar a jornada:",
+        texto: `"Após voltar de uma longa jornada, o herói ao chegar ao seu lar, encontra sua rainha jogada ao chão, aos prantos, suplicando por ajuda, pois o Lorde Dobug tinha sequestrado a sua princesa, a princesa Melissa. Em um momento de angústia e desespero, o herói partiu imediatamente em busca de sua princesa para poder resgatá-lá do Tirano LordeGoBug"`,
+        pergunta: "Escolha sua classe para começar a jornada, 🎯 Cuidado, jogador! Escolha com sabedoria, pois cada decisão define seu caminho e muitas vezes não tem volta. Se fizer a escolha errada, terá que recomeçar tudo do zero. Assim como na programação: se você não pensar com cuidado e escolher as ferramentas certas, você pode perder tudo e ter que refazer o código inteiro.:",
         orientacao: "🎯 Cada classe representa uma linguagem ou ferramenta!",
         campo: "classe",
         opcoes: [
@@ -491,10 +505,10 @@
         ]
     }, {
         id: 1,
+        numero: "2",
         titulo: "CAPÍTULO 2: A FLORESTA DA ESTRUTURA",
-        icone: "🌲",
         texto: `"Após escolher sua classe, o Herói entrou na Floresta da Estrutura. As árvores eram como tags HTML, entrelaçadas formando uma teia complexa. Cada galho era um elemento, cada folha um atributo. Para atravessar essa floresta, ele precisava de uma ferramenta que pudesse abrir caminho e entender a hierarquia das coisas."`,
-        pergunta: "🪓 Escolha sua ferramenta para atravessar a floresta:",
+        pergunta: "Escolha sua ferramenta para atravessar a floresta:",
         orientacao: "🌿 Cada ferramenta te ajuda a entender HTML e DOM!",
         campo: "ferramenta",
         opcoes: [
@@ -505,10 +519,10 @@
         ]
     }, {
         id: 2,
+        numero: "3",
         titulo: "CAPÍTULO 3: O RIO DOS DADOS",
-        icone: "🌊",
         texto: `"O Herói chegou ao Rio dos Dados. Suas águas eram feitas de informações que precisavam ser organizadas. Cada gota era um dado, cada corrente era uma tabela. Para cruzar esse rio, ele precisava de um meio de transporte que pudesse navegar por esse mar de informações."`,
-        pergunta: "🚣 Escolha seu transporte para cruzar o rio:",
+        pergunta: "Escolha seu transporte para cruzar o rio:",
         orientacao: "📊 Cada transporte te ajuda a entender banco de dados e SQL!",
         campo: "transporte",
         opcoes: [
@@ -519,10 +533,10 @@
         ]
     }, {
         id: 3,
+        numero: "4",
         titulo: "CAPÍTULO 4: A MONTANHA DA LÓGICA",
-        icone: "⛰️",
         texto: `"A Montanha da Lógica se ergueu à sua frente. Seus picos eram feitos de estruturas condicionais e loops. Cada passo era uma decisão, cada escolha um caminho. Para escalar essa montanha, o Herói precisava de uma ferramenta que o ajudasse a subir e entender a lógica por trás de tudo."`,
-        pergunta: "🧗 Escolha sua ferramenta de escalada:",
+        pergunta: "Escolha sua ferramenta de escalada:",
         orientacao: "🧠 Cada ferramenta te ajuda a entender Python e lógica!",
         campo: "escalada",
         opcoes: [
@@ -533,10 +547,10 @@
         ]
     }, {
         id: 4,
+        numero: "5",
         titulo: "CAPÍTULO 5: O TEMPLO DAS FUNÇÕES",
-        icone: "🏛️",
         texto: `"No Templo das Funções, cada sala era um método que precisava ser executado. As portas só se abriam com a chave certa. Para avançar, o Herói precisava entender como cada função se encaixava no grande esquema das coisas."`,
-        pergunta: "🔑 Escolha sua chave para abrir as portas:",
+        pergunta: "Escolha sua chave para abrir as portas:",
         orientacao: "🔐 Cada chave te ajuda a entender funções e métodos!",
         campo: "chave",
         opcoes: [
@@ -547,10 +561,10 @@
         ]
     }, {
         id: 5,
+        numero: "6",
         titulo: "CAPÍTULO 6: O VALE DA AUTOMAÇÃO",
-        icone: "🤖",
         texto: `"O Vale da Automação era cheio de tarefas repetitivas que precisavam ser executadas sem erro. Para passar despercebido e automatizar tudo, o Herói precisava de um disfarce que o permitisse agir nas sombras e coletar informações."`,
-        pergunta: "🎭 Escolha seu disfarce para o vale:",
+        pergunta: "Escolha seu disfarce para o vale:",
         orientacao: "🕵️ Cada disfarce te ajuda a entender automação!",
         campo: "disfarce",
         opcoes: [
@@ -561,10 +575,10 @@
         ]
     }, {
         id: 6,
+        numero: "7",
         titulo: "CAPÍTULO 7: A CIDADE DA WEB",
-        icone: "🏙️",
         texto: `"A Cidade da Web era onde tudo se conectava. Cada prédio era uma API, cada rua uma rota. Para construir algo grandioso, o Herói precisava de ferramentas que o ajudassem a erguer estruturas sólidas e conectar tudo."`,
-        pergunta: "🏗️ Escolha sua ferramenta de construção:",
+        pergunta: "Escolha sua ferramenta de construção:",
         orientacao: "🔧 Cada ferramenta te ajuda a entender Flask e APIs!",
         campo: "construcao",
         opcoes: [
@@ -575,8 +589,8 @@
         ]
     }, {
         id: 7,
+        numero: "8",
         titulo: "CAPÍTULO 8: O CASTELO DO LEGADO",
-        icone: "🏰",
         texto: `"O Herói chegou ao Castelo do Lorde das APIs. Depois de uma longa jornada, com todas as ferramentas que coletou, estava pronto para enfrentar o desafio final. A Princesa Leia dos Dados o esperava. Sua jornada o transformou em um verdadeiro programador!"`,
         pergunta: "🏆 Sua jornada está completa!",
         orientacao: "🎉 Você coletou todos os itens e se tornou um herói!",
@@ -584,19 +598,11 @@
         opcoes: []
     }];
 
-    // ================================================================
-    // ===== ESTADO =====
-    // ================================================================
-
     let estado = {
         moduloAtual: 0,
         itens: [],
         escolhas: {}
     };
-
-    // ================================================================
-    // ===== FUNÇÕES =====
-    // ================================================================
 
     function getImagemItem(nome) {
         if (IMAGENS_ITENS[nome]) return IMAGENS_ITENS[nome];
@@ -621,28 +627,27 @@
         const modulo = modulos[estado.moduloAtual];
         if (!modulo) return;
 
-        // ===== ATUALIZA HEADER =====
         atualizarHeader(modulo.id);
 
-        // ===== CAIXA DE TEXTO =====
-        const textBox = document.getElementById('textBox');
+        // ===== APLICA A IMAGEM DE FUNDO DINÂMICA NO CONTAINER MESTRE =====
+        const cenarioContainer = document.getElementById('cenarioContainer');
         const fundoImg = IMG_PATH + `capitulo${modulo.id + 1}_fundo.png`;
+        
         const imgTest = new Image();
         imgTest.onload = function() {
-            textBox.style.backgroundImage = `url('${fundoImg}')`;
+            cenarioContainer.style.backgroundImage = `url('${fundoImg}')`;
         };
         imgTest.onerror = function() {
-            textBox.style.backgroundImage = '';
+            cenarioContainer.style.backgroundImage = '';
         };
         imgTest.src = fundoImg;
 
-        document.getElementById('chapterIcon').textContent = modulo.icone;
+        document.getElementById('chapterNumber').textContent = modulo.numero;
         document.getElementById('chapterTitle').textContent = modulo.titulo;
         document.getElementById('chapterText').textContent = modulo.texto;
         document.getElementById('chapterQuestion').textContent = modulo.pergunta;
         document.getElementById('guidanceText').textContent = modulo.orientacao;
 
-        // ===== OPÇÕES =====
         const container = document.getElementById('optionsContainer');
         container.innerHTML = '';
 
@@ -676,7 +681,6 @@
             document.getElementById('btnNext').textContent = '🏆 FINALIZAR';
         }
 
-        // ===== BOTÃO =====
         const btnNext = document.getElementById('btnNext');
         btnNext.classList.remove('active');
 
@@ -801,16 +805,13 @@
 
         const modulo = modulos[estado.moduloAtual];
         if (modulo.opcoes.length === 0) {
-            showToast('🏆 Jornada concluída com sucesso!', 'success');
             return;
         }
 
         if (estado.moduloAtual < modulos.length - 1) {
             estado.moduloAtual++;
             renderizarModulo();
-            document.querySelector('.categoria-content').scrollIntoView({ behavior: 'smooth' });
-        } else {
-            showToast('🏆 Você completou toda a jornada!', 'success');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         salvarProgresso();
@@ -827,7 +828,6 @@
 
         renderizarModulo();
         salvarProgresso();
-        showToast('🔄 Jornada reiniciada!', 'info');
     }
 
     function salvarProgresso() {
@@ -853,10 +853,6 @@
         }
         return false;
     }
-
-    // ================================================================
-    // ===== INIT =====
-    // ================================================================
 
     document.addEventListener('DOMContentLoaded', function() {
         const carregado = carregarProgresso();
