@@ -34,19 +34,19 @@
     }
 
     /* ===== CONTAINER MESTRE (ABRANGE A TELA INTEIRA) ===== -->
-    .rpg-cenario-container {
-        width: 100vw;
-        min-height: 100vh;
-        margin: 0;
-        padding: 40px 60px;
-        box-sizing: border-box;
-        background-size: cover !important;
-        background-position: center !important;
-        background-repeat: no-repeat !important;
-        position: relative;
-        overflow-x: hidden;
-        transition: background-image 0.5s ease-in-out;
-    }
+    /* ===== RESETA O FUNDO DO BASE ===== */
+body {
+    background: #0a0a1a !important;
+    background-image: none !important;
+}
+
+/* ===== GARANTE QUE O CONTAINER DO RPG SEJA O FUNDO PRINCIPAL ===== */
+.rpg-cenario-container {
+    background-color: #0a0a1a !important;
+    background-size: cover !important;
+    background-position: center center !important;
+    background-repeat: no-repeat !important;
+}
 
     /* Garante que todos os sub-containers fiquem na camada superior (acima do fundo) */
     .rpg-cenario-container > * {
@@ -359,6 +359,95 @@
         color: #54ff44;
     }
 
+    /* ===== MODAL FINAL ===== */
+    #modalFinal {
+        display: none;
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.85);
+        backdrop-filter: blur(10px);
+        z-index: 9999;
+        align-items: center;
+        justify-content: center;
+        animation: modalFadeIn 0.5s ease;
+    }
+
+    @keyframes modalFadeIn {
+        0% { opacity: 0; }
+        100% { opacity: 1; }
+    }
+
+    #modalFinal .modal-content {
+        background: rgba(20,20,40,0.95);
+        border: 2px solid #ffd700;
+        border-radius: 24px;
+        padding: 40px 50px;
+        max-width: 500px;
+        text-align: center;
+        box-shadow: 0 0 60px rgba(255,215,0,0.3);
+        animation: modalPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes modalPop {
+        0% { transform: scale(0.5) rotate(-5deg); opacity: 0; }
+        100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+
+    #modalFinal .modal-content .modal-icon {
+        font-size: 4rem;
+        margin-bottom: 10px;
+    }
+    #modalFinal .modal-content h2 {
+        color: #ffd700;
+        font-size: 2rem;
+        margin-bottom: 10px;
+    }
+    #modalFinal .modal-content p {
+        color: #d0d0d0;
+        font-size: 1.1rem;
+        line-height: 1.6;
+        margin-bottom: 20px;
+    }
+    .modal-actions {
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    .modal-actions .btn-modal {
+        padding: 12px 30px;
+        border-radius: 12px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: none;
+        font-size: 1rem;
+    }
+    .modal-actions .btn-modal:hover {
+        transform: translateY(-3px);
+    }
+    .modal-actions .btn-recomecar {
+        background: linear-gradient(135deg, #00d4ff, #7b2ffc);
+        color: #fff;
+    }
+    .modal-actions .btn-recomecar:hover {
+        box-shadow: 0 0 40px rgba(0, 212, 255, 0.4);
+    }
+    .modal-actions .btn-voltar-index {
+        background: rgba(255,255,255,0.1);
+        color: #ddd;
+        border: 1px solid rgba(255,255,255,0.2);
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+    }
+    .modal-actions .btn-voltar-index:hover {
+        background: rgba(255,255,255,0.2);
+        border-color: rgba(255,255,255,0.4);
+    }
+
     @media (max-width: 768px) {
         .rpg-cenario-container {
             padding: 20px 15px;
@@ -381,6 +470,18 @@
         }
         .rpg-actions .btn-next {
             width: 100%;
+        }
+        #modalFinal .modal-content {
+            padding: 30px 20px;
+            margin: 20px;
+        }
+        .modal-actions {
+            flex-direction: column;
+        }
+        .modal-actions .btn-modal {
+            width: 100%;
+            text-align: center;
+            justify-content: center;
         }
     }
 </style>
@@ -434,6 +535,28 @@
 
 </div>
 
+<!-- ===== MODAL DE PARABÉNS ===== -->
+<div id="modalFinal">
+    <div class="modal-content">
+        <div class="modal-icon">🏆</div>
+        <h2>PARABÉNS, HERÓI!</h2>
+        <p>
+            Você completou sua jornada e se tornou um verdadeiro programador!<br>
+            Sua aventura pelo mundo da programação foi épica!
+            <br><br>
+            <strong style="color: #ffd700;">✨ O conhecimento está em suas mãos!</strong>
+        </p>
+        <div class="modal-actions">
+            <button class="btn-modal btn-recomecar" onclick="resetarJornada(); document.getElementById('modalFinal').style.display='none';">
+                🔄 Recomeçar Jornada
+            </button>
+            <a href="/" class="btn-modal btn-voltar-index">
+                🏠 Voltar ao Início
+            </a>
+        </div>
+    </div>
+</div>
+
 <script>
     // ================================================================
     // ===== CONFIGURAÇÃO DAS IMAGENS =====
@@ -458,10 +581,10 @@
         'Lanterna': { img: 'lanterna.png', emoji: '🔦' },
         'Mapa': { img: 'mapa.png', emoji: '🗺️' },
         'Bússola': { img: 'bussola.png', emoji: '🧭' },
-        'F12': { img: 'f12.png', emoji: '✨' },        // ← nome igual ao da opção
-    'pergaminho': { img: 'pergaminho.png', emoji: '🧾' },  // ← nome igual
+        'F12+ctrl+c+ctrl+v': { img: 'f12.png', emoji: '✨' },
+        'pergaminho': { img: 'pergaminho.png', emoji: '🧾' },
         'anel': { img: 'anel.png', emoji: '💍' },
-        'Picareta': { img: 'picareta.png', emoji: '⛏️' },
+        'Vscraping': { img: 'picareta.png', emoji: '⛏️' },
         'SELECT': { img: 'corda.png', emoji: '🍒' },
         'INSERT': { img: 'picareta.png', emoji: '🍎' },
         'UPDATE': { img: 'aguia.png', emoji: '🥑' },
@@ -470,13 +593,9 @@
         'paginas': { img: 'gema.png', emoji: '📚' },
         'bola': { img: 'codigo.png', emoji: '⚽' },
         'Código': { img: 'mascara.png', emoji: '⚙️' },
-        'Capa': { img: 'capa.png', emoji: '🧙‍♂️' },
-        'Óculos': { img: 'oculos.png', emoji: '🕵️' },
-        'Disfarce': { img: 'disfarce.png', emoji: '🎪' },
-        'Martelo': { img: 'martelo.png', emoji: '🏗️' },
-        'Régua': { img: 'regua.png', emoji: '📐' },
-        'Tijolo': { img: 'tijolo.png', emoji: '🧱' },
-        'Chave Inglesa': { img: 'chave_inglesa.png', emoji: '🔧' }
+        'Recomeçar': { img: '', emoji: '🔄' },
+        'Voltar ao Início': { img: '', emoji: '🏠' },
+        'Continuar': { img: '', emoji: '🎮' }
     };
 
     const headerConfig = {
@@ -484,17 +603,15 @@
         1: { titulo: 'Jornada do Programador - Parte 2', subtitulo: 'Após conhecer o Selenium, a I.A. me explicou que eu podia usar aquilo para coletar dados da internet, como por exemplo, extrair a cotação do dólar e do euro em tempo real. Pensei: Opa, se eu posso coletar dados úteis, posso usá-los para criar algo que atenda às dores de uma fatia de mercado ou nicho! Foi aí que fiz os meus primeiros scripts de automação. No começo, eu nem entendia direito o que estava escrevendo — era na base do famoso Ctrl+C, Ctrl+V, perguntando para a I.A. como fazia e para que funcionava. Mas ver o robô navegando sozinho na tela e trazendo a informação foi o estalo que eu precisava. Depois daquela empolgação inicial, percebi que precisava aprender mais. Decidi que era hora de abrir o capô do código e entender de verdade o que estava acontecendo: compreender a estrutura, o que significa um import, para que serve uma função, como estruturar o código e o que é uma rota. Era o início da travessia pela densa Floresta da Estrutura!' },
         2: { titulo: 'Jornada do Programador - Parte 3', subtitulo: 'Depois do Selenium, decidi mirar em um território que todo mundo usa: o WhatsApp. Pensei: Se eu criar algo para o WhatsApp, por mais que não dê dinheiro de imediato, todo mundo tem e usa. Além disso, eu sabia que para fazer qualquer coisa funcionar ali, eu teria que aprender na marra. Foi nessa busca que conheci o Make, os Webhooks e comecei a entender a lógica por trás das integrações. A minha regra de ouro começou a se desenhar ali: eu ia atrás de um problema real para, só depois, criar a ferramenta que ia solucioná-lo. Mas a jornada não foi fácil. Enquanto mexia com o bot do WhatsApp, eu e a I.A. batemos cabeça porque eu simplesmente não conseguia achar o bendito seletor — até porque eu não sabia o que procurar e nem sabia como perguntar direito. Na tentativa de resolver isso, tive um estalo: E se eu criar um script que mapeia essa bagunça inteira? Fiz minha primeira ferramenta de mapeamento: eu digitava o nome do site e ela mapeava o site todo para mim problema é que eu tinha criado a ferramenta, mas ainda não sabia exatamente para que ela servia na prática, já que eu só queria achar um tal de seletor que a I.A. havia mencionado. Foi aí que decidi cavar mais fundo e entender o que era o DOM. Perguntei para a I.A.: Me explica direito o que é esse seletor? Vejo coisas escritas como span, números parecidos e estruturas diferentes. Ela me explicou sobre as classes. Perguntei: Classe? O que é isso? E fui entendendo. Ela me mostrou a estrutura real do DOM: a árvore de elementos onde existe pai, filho e neto, onde cada parte é um elemento com sua classe, que juntas formam uma div, que somadas formam um container, e assim por diante. Esse foi o ponto de virada na minha mente. Hoje, quando olho para uma página web, eu não vejo mais apenas uma tela estática e bonitinha; eu enxergo a infraestrutura viva por trás dela: o HTML, o JavaScript, o JSON e a engrenagem funcionando' },
         3: { titulo: 'Jornada do Programador - Parte 4', subtitulo: 'Para tornar meu projeto do WhatsApp funcional, tive alguns desafios. No começo, eu só sabia extrair textos fixos, mas queria usar todo o potencial do Selenium e do Playwright. O problema é que, logo depois de dominar a coleta, esbarrei na barreira de onde guardar esses dados. Foi quando mergulhei no ecossistema de banco de dados e aprendi sobre a linguagem SQL, gerenciando SQLite e PostgreSQL da vida. Entendi como estruturar tabelas, fazer consultas e permitir que vários robôs trabalhassem simultaneamente acessando a mesma base de dados, usando threads, o que tornou o sistema muito mais robusto. Com a coleta resolvida e o armazenamento garantido, percebi que precisava gerenciar melhor essas informações. No início, minhas classificações eram feitas por Regex e por combinações de palavras-chave que eu criava para o bot buscar parâmetros. Mas eu queria ir além.Pensei comigo: Agora é a hora de implementar I.A. Se eu tivesse uma I.A. um pouco mais avançada gerenciando os dados, eu poderia dar ordens para ela ler o contexto real da mensagem, em vez de ficar dependendo apenas de uma palavra exata. Era o passo que faltava para dar autonomia real ao sistema.' },
-        4: { titulo: 'Jornada do Programador - Parte 5', subtitulo: 'Depois de entender como funcionava o banco de dados, eu precisava administrá-lo de forma inteligente. Fui saber como utilizar a Inteligência Artificial de verdade, indo além das ferramentas comuns de mercado. Pensei: Preciso usar a I.A. a meu favor, mas de um jeito sustentável, sem alto custo de recursos, com mais controle e garantindo a privacidade dos dados do usuário, sem jogá-los diretamente na rede. Foi aí que conheci o Ollama. Seguindo a minha lógica de identificar um problema e ir atrás da ferramenta certa, o Ollama me chamou atenção por ser fácil de usar, se instalar sozinho e permitir baixar diferentes modelos de inteligência artificial localmente. Percebi que não era necessário de um computador da NASA para rodá-lo. No entanto, esbarrei em uma nova barreira: como o usuário final instalaria o Ollama no computador dele usando apenas o meu programa? Decidi que o projeto precisava ser o mais intuitivo possível, onde o cliente não tivesse trabalho e apenas usasse a ferramenta. Desenvolvi um método em que o próprio script escaneia o computador do cliente, analisa as peças de hardware disponíveis e identifica a melhor forma de realizar a instalação. O sistema instala o Ollama automaticamente, escolhe o modelo de I.A. mais compatível com aquele hardware sem deixá-lo pesado, e faz o bot rodar sozinho. Com isso, fechei o ciclo: aprendi a coletar, guardar e gerenciar os dados, elevando o projeto a um nível de automação e autonomia completos' },
-        5: { titulo: 'Jornada do Programador - Parte 6', subtitulo: 'O Vale da Automação' },
-        6: { titulo: 'Jornada do Programador - Parte 7', subtitulo: 'A Cidade da Web' },
-        7: { titulo: 'Jornada do Programador - Parte 8', subtitulo: 'O Castelo do Legado - O Fim da Jornada!' }
+        4: { titulo: 'Jornada do Programador - Parte 5', subtitulo: 'Depois de entender como funcionava o banco de dados, eu precisava administrá-lo de forma inteligente. Fui saber como utilizar a Inteligência Artificial de verdade, indo além das ferramentas comuns de mercado. Pensei: Preciso usar a I.A. a meu favor, mas de um jeito sustentável, sem alto custo de recursos, com mais controle e garantindo a privacidade dos dados do usuário, sem jogá-los diretamente na rede. Foi aí que conheci o Ollama. Seguindo a minha lógica de identificar um problema e ir atrás da ferramenta certa, o Ollama me chamou atenção por ser fácil de usar, se instalar sozinho e permitir baixar diferentes modelos de inteligência artificial localmente. Percebi que não era necessário de um computador da NASA para rodá-lo. No entanto, esbarrei em uma nova barreira: como o usuário final instalaria o Ollama no computador dele usando apenas o meu programa? Decidi que o projeto precisava ser o mais intuitivo possível, onde o cliente não tivesse trabalho e apenas usasse a ferramenta. Desenvolvi um método em que o próprio script escaneia o computador do cliente, analisa as peças de hardware disponíveis e identifica a melhor forma de realizar a instalação. O sistema instala o Ollama automaticamente, escolhe o modelo de I.A. mais compatível com aquele hardware sem deixá-lo pesado, e faz o bot rodar sozinho. Com isso, fechei o ciclo: aprendi a coletar, guardar e gerenciar os dados, elevando o projeto a um nível de automação e autonomia completa' },
+        5: { titulo: 'Jornada do Programador - Fim de uma jornada e o inicio da próxima', subtitulo: 'Depois de dominar a I.A. e deixar o meu bot funcionando, o objetivo final era claro: conseguir me recolocar no mercado de trabalho. A grande questão era: como convencer um recrutador a olhar para o meu currículo e enxergar meu valor, sabendo que venho de áreas como oficial de manutenção e operador de agroindústria, e não possuo certificado de faculdade e nem de cursos formais tradicionais, mas construo projetos práticos e que atendam às necessidades reais do usuário do zero? Foi aí que tive a sacada de criar um currículo interativo e online. Desenvolvi um script base e criei um dashboard usando Flask para rodar localmente na minha máquina, e depois o subi na Render. Fui construindo o projeto — o código, as funções, rota por rota —, editando imagens com I.A. para manter uma identidade visual coerente, e escrevendo os textos de forma clara para que qualquer pessoa entendesse a lógica do que eu estava falando. Eu sei que o mercado usa termos técnicos robustos que muitas vezes eu não conheço pelo nome formal, ou pronunciá-los, mas eu sei para que serve, como funciona, onde e como usar. E a melhor forma de provar isso é mostrando a máquina rodando, a interface funcionando, a lógica por trás do código e todo o mecanismo estruturado. Para quebrar a barreira de não ter uma formação acadêmica — tendo aprendido a dominar a tecnologia em poucos meses —, criei esse currículo interativo com links para vídeos no YouTube onde explico o porquê, o para quê e o como de cada etapa. Com isso, o projeto fala por si só.' }
     };
 
     const modulos = [{
         id: 0,
         numero: "1",
         titulo: "CAPÍTULO 1: O DESPERTAR DO HERÓI",
-        texto: `"Após voltar de uma longa jornada, nosso herói chega ao seu lar, e encontra sua rainha desespero e aos prantos suplicando por ajuda, pois o Lorde Dobug tinha sequestrado a sua princesa, a princesa Melissa. Em um momento de angústia e desespero, o herói partiu imediatamente em busca de sua Filha, para poder resgatá-lá do Tirano LordeDoBug"`,
+        texto: `"Após voltar de uma longa jornada, nosso herói chega ao seu lar, e encontra sua rainha desesperada e aos prantos suplicando por ajuda, pois o Lorde Dobug tinha sequestrado a sua princesa, a princesa Melissa. Em um momento de angústia e desespero, o herói partiu imediatamente em busca de sua Filha, para poder resgatá-lá do Tirano Lorde DoBug"`,
         pergunta: "Escolha sua classe para começar a jornada! 🎯Cuidado, jogador! Escolha com sabedoria: cada decisão define o seu caminho e, muitas vezes, não há volta, retorno facil para o caminho da correto da jornada. Você terá de refazer todo percurso ovamente, pois recomeçar do zero em alguns momentos e a melhor escolha para reafirmar e obter conhecimento .Assim como na programação: se você não planejar com cuidado, tropeçara nos debugs e erros diários ou escolher as ferramentas erradas, vc pode acabar preso em um loop sem fim, girando em círculos sem achar a saída. Tenha coragem... você é forte:",
         orientacao: "🎯 Cada classe representa uma linguagem ou ferramenta!",
         campo: "classe",
@@ -522,15 +639,15 @@
         id: 2,
         numero: "3",
         titulo: "CAPÍTULO 3: ESTRADA DO DONHECIMENTO",
-        texto: `"Bem vindo a Khaz-Mithril: vc esta na lendária cidade dos anões mas aqui vc encontrara muito mais que espada pois aquei residem alguns  os magos místicos, eles dominam as artes arcanas do ctrl+c e ctrl+v, porem tenha cautela a utilizas tais magias e encantos por mais poderosos que possam ser se, a não compreensão da  sua natureza, poder, e funcionalidade podera trazer riscos a sua jornada, adquira conhecimento em Fróðleikr, para poder conhecer o poder delas e utiliza-las com ética, respeito e sabedoria. ."`,
+        texto: `"Bem vindo a Khaz-Mithril: vc esta na lendária cidade dos anões mas aqui vc encontrara muito mais que apenas espadas, pois também residem alguns  dos magos místicos lendarios, eles dominam as artes arcanas do ctrl+c e ctrl+v, porem tenha cautela a utilizar tais magias e encantos por mais poderosos que possam parecer, a não compreensão da  sua natureza e funcionalidade podera trazer riscos a sua jornada, adquira conhecimento em Fróðleikr, para poder conhecer o poder delas e utiliza-las com ética, respeito. ."`,
         pergunta: "Escolha uma item para usar e poder obter conhecimento:",
         orientacao: "📊 Cada uma te ajuda a entender seu uso e local!",
         campo: "transporte",
         opcoes: [
-            { icone: "✨", nome: "F12", descricao: "ira gerar uma luz que te guiara ate seu destino" },
-            { icone: "🧾", nome: "pergaminho ", descricao: "o pergaminhco conter a magia,understend this error, essa e uma magia poderosa poucos detem seu conhecimento ao recitala vc recebera conhecimento instananeo use com sabedoria" },
+            { icone: "✨", nome: "F12+ctrl+c+ctrl+v", descricao: "ira gerar uma luz que te guiara ate seu destino" },
+            { icone: "🧾", nome: "pergaminho ", descricao: "o pergaminhco contem a magia,understend this error, essa e uma magia poderosa poucos detem seu conhecimento ao recitala vc recebera conhecimento instananeo use com sabedoria" },
             { icone: "💍", nome: "anel", descricao: "Este anel tem propriedade de , Antidetect, vc podera passar sem ser ratreado" },
-            { icone: "⛏️", nome: "Picareta", descricao: "Vscraping" }
+            { icone: "⛏️", nome: "Vscraping", descricao: "Vscraping é uma técnica automatizada para extrair informações de páginas da interne" }
         ]
     }, {
         id: 3,
@@ -549,7 +666,7 @@
     }, {
         id: 4,
         numero: "5",
-        titulo: "CAPÍTULO 5: O TEMPLO DAS FUNÇÕES",
+        titulo: "CAPÍTULO 5: MASMORA DAS APIs",
         texto: `"Sua jornada está quase concluída. Agora temos de chegar ao castelo do Lord Debug, porém é longe e fica no alto de uma montanha, cercada de perigosas APIs que escravizam seus usuários. Tome cuidado ao transitar pela rede, pois ladrões estão à espreita, só esperando você logar para obter seus dados. Você precisará domesticar um Grifo da raça I.A. para poder montar nele e guiá-lo até onde você quer ir. Eles são criaturas fantásticas e inteligentes, mas sem um bom treino e um bom guia são totalmente burras e desorientadas. Treine-o e o guie até seu destino, Jovem Herói."`,
         pergunta: "escolha um item para seu Grifo:",
         orientacao: "cada item dara um treino especifico ao seu Grifo!",
@@ -557,46 +674,22 @@
         opcoes: [
             { icone: "📞", nome: "comunicação", descricao: "coloque sua I.A para se comunicar com textos para treinala" },
             { icone: "📚", nome: "paginas", descricao: "sua i.a precisa de contexto este arquivo mensagens.txt ira dar a ela contexto para ela entender oque vc quer" },
-            { icone: "⚽", nome: "bola", descricao: "com essa bola ensine truqes a sua I.A ela sabera abrir fechar coias e ate buscar itens para vc e guardalos" },
-            { icone: "⚙️", nome: "Código", descricao: "Atraves dessa engrenagem vc podera deixar ela em alerta e programala de forma que vc quiser, danto a vc total controle e autonomia sobre sua I.A" }
+            { icone: "⚽", nome: "bola", descricao: "com essa bola ensine truqes a sua I.A ela sabera abrir e fechar coisas também coletara  itens para vc e guardara em seus baús" },
+            { icone: "⚙️", nome: "Código", descricao: "Atraves dessa engrenagem vc podera deixar ela em alerta e programala de forma que vc queira, dando a vc total controle e autonomia sobre sua I.A" }
         ]
     }, {
         id: 5,
         numero: "6",
-        titulo: "CAPÍTULO 6: O VALE DA AUTOMAÇÃO",
-        texto: `"O Vale da Automação era cheio de tarefas repetitivas que precisavam ser executadas sem erro. Para passar despercebido e automatizar tudo, o Herói precisava de um disfarce que o permitisse agir nas sombras e coletar informações."`,
-        pergunta: "Escolha seu disfarce para o vale:",
-        orientacao: "🕵️ Cada disfarce te ajuda a entender automação!",
-        campo: "disfarce",
-        opcoes: [
-            { icone: "🎭", nome: "Máscara", descricao: "Selenium" },
-            { icone: "🧙‍♂️", nome: "Capa", descricao: "Scraping" },
-            { icone: "🕵️", nome: "Óculos", descricao: "Playwright" },
-            { icone: "🎪", nome: "Disfarce", descricao: "Automação" }
-        ]
-    }, {
-        id: 6,
-        numero: "7",
-        titulo: "CAPÍTULO 7: A CIDADE DA WEB",
-        texto: `"A Cidade da Web era onde tudo se conectava. Cada prédio era uma API, cada rua uma rota. Para construir algo grandioso, o Herói precisava de ferramentas que o ajudassem a erguer estruturas sólidas e conectar tudo."`,
-        pergunta: "Escolha sua ferramenta de construção:",
-        orientacao: "🔧 Cada ferramenta te ajuda a entender Flask e APIs!",
-        campo: "construcao",
-        opcoes: [
-            { icone: "🏗️", nome: "Martelo", descricao: "Flask" },
-            { icone: "📐", nome: "Régua", descricao: "Rotas" },
-            { icone: "🧱", nome: "Tijolo", descricao: "Templates" },
-            { icone: "🔧", nome: "Chave", descricao: "Deploy" }
-        ]
-    }, {
-        id: 7,
-        numero: "8",
-        titulo: "CAPÍTULO 8: O CASTELO DO LEGADO",
-        texto: `"O Herói chegou ao Castelo do Lorde das APIs. Depois de uma longa jornada, com todas as ferramentas que coletou, estava pronto para enfrentar o desafio final. A Princesa Leia dos Dados o esperava. Sua jornada o transformou em um verdadeiro programador!"`,
-        pergunta: "🏆 Sua jornada está completa!",
-        orientacao: "🎉 Você coletou todos os itens e se tornou um herói!",
+        titulo: "CAPÍTULO 6: VOLTA AO LAR",
+        texto: `"Parabéns, herói! Após uma longa jornada, você derrotou o Lord Debug e salvou a princesa Melissa. Retorne para o seu lar sabendo que adquiriu grande conhecimento nessa jornada, e se prepare para as próximas, pois o conhecimento está em suas mãos. Basta ir atrás dele e usufruir de todo o seu potencial nas suas aventuras pelo UNIVERSO DA PROGRAMAÇÃO."`,
+        pergunta: "🏆 Sua jornada terminou! Escolha seu destino:",
+        orientacao: "Obrigado por me acompanhar nessa jornada épica pela programação!",
         campo: "final",
-        opcoes: []
+        opcoes: [
+            { icone: "🔄", nome: "Recomeçar", descricao: "Volte ao início da sua jornada e reviva cada desafio!" },
+            { icone: "🏠", nome: "Voltar ao Início", descricao: "Retorne para a página inicial do currículo." },
+            { icone: "🎮", nome: "Continuar", descricao: "Sua jornada está completa, mas você pode explorar outros caminhos!" }
+        ]
     }];
 
     let estado = {
@@ -666,13 +759,27 @@
                     iconHTML = `<span style="font-size:2.5rem;">${dados.emoji || opcao.icone || '📦'}</span>`;
                 }
 
-                // ===== AQUI ESTÁ A MUDANÇA: ADICIONEI A DESCRIÇÃO =====
                 btn.innerHTML = `
                     <span class="opt-icon">${iconHTML}</span>
                     <span class="opt-name">${opcao.nome}</span>
                     <span class="opt-desc">${opcao.descricao || ''}</span>
                 `;
-                btn.addEventListener('click', () => selecionarOpcao(index));
+                
+                // ===== TRATAMENTO ESPECIAL PARA O CAPÍTULO 6 =====
+                if (estado.moduloAtual === 5) {
+                    btn.addEventListener('click', () => {
+                        if (opcao.nome === 'Recomeçar') {
+                            resetarJornada();
+                        } else if (opcao.nome === 'Voltar ao Início') {
+                            window.location.href = '/';
+                        } else if (opcao.nome === 'Continuar') {
+                            // Mostra o modal de parabéns
+                            document.getElementById('modalFinal').style.display = 'flex';
+                        }
+                    });
+                } else {
+                    btn.addEventListener('click', () => selecionarOpcao(index));
+                }
                 container.appendChild(btn);
             });
         } else {
@@ -686,7 +793,11 @@
         const btnNext = document.getElementById('btnNext');
         btnNext.classList.remove('active');
 
-        if (estado.escolhas[modulo.campo]) {
+        // ===== SE FOR O CAPÍTULO 6, ATIVA O BOTÃO AUTOMATICAMENTE =====
+        if (estado.moduloAtual === 5) {
+            btnNext.classList.add('active');
+            btnNext.textContent = '🏆 FINALIZAR';
+        } else if (estado.escolhas[modulo.campo]) {
             const valor = estado.escolhas[modulo.campo];
             const botoes = container.querySelectorAll('.option-btn');
             botoes.forEach((btn, idx) => {
@@ -749,7 +860,7 @@
         estado.itens.forEach(item => {
             const badge = document.createElement('span');
             badge.className = 'item-badge';
-            badge.title = item.nome;  // tooltip com o nome ao passar o mouse
+            badge.title = item.nome;
 
             const iconWrapper = document.createElement('span');
             iconWrapper.className = 'item-icon';
@@ -768,7 +879,6 @@
                 iconWrapper.textContent = dados.emoji || item.icone || '📦';
             }
 
-            // ===== SÓ O ÍCONE, SEM O NOME =====
             badge.appendChild(iconWrapper);
             grid.appendChild(badge);
         });
@@ -804,7 +914,10 @@
         if (!btn.classList.contains('active')) return;
 
         const modulo = modulos[estado.moduloAtual];
-        if (modulo.opcoes.length === 0) {
+        
+        // ===== SE FOR O ÚLTIMO MÓDULO (CAPÍTULO 6) =====
+        if (estado.moduloAtual === 5) {
+            document.getElementById('modalFinal').style.display = 'flex';
             return;
         }
 
@@ -828,6 +941,7 @@
 
         renderizarModulo();
         salvarProgresso();
+        document.getElementById('modalFinal').style.display = 'none';
     }
 
     function salvarProgresso() {

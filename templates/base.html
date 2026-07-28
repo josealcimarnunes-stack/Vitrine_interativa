@@ -4,11 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block titulo %}Mano - Vitrine Interativa{% endblock %}</title>
+    
+    <!-- ===== FORÇA SEM CACHE ===== -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    
     <style>
         /* ===== BASE ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            background: url('/static/images/fundos/fundo_pagina.png') no-repeat center center fixed;
+            background: url('/static/images/fundos/fundo_pagina.png?{{ versao }}') no-repeat center center fixed;
             background-size: cover;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: #56cfbb;
@@ -21,7 +27,7 @@
         .profile-header {
             text-align: center;
             padding: 50px 20px;
-            background: url('/static/images/fundos/fotofundo1.png') no-repeat center center;
+            background: url('/static/images/fundos/fotofundo1.png?{{ versao }}') no-repeat center center;
             background-size: cover;
             border-radius: 24px;
             margin-bottom: 40px;
@@ -141,12 +147,11 @@
 
         /* ===== CONTEÚDO DAS CATEGORIAS ===== */
         .categoria-content {
-            background: rgba(0,0,0,0.4);
-            border-radius: 24px;
-            padding: 40px;
-            border: 1px solid rgba(0,212,255,0.1);
-            min-height: 500px;
-        }
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    min-height: auto;
+}
 
         /* ===== MÓDULOS GRID (só no index) ===== */
         .modules-grid {
@@ -371,6 +376,8 @@
             clearTimeout(toast._timeout);
             toast._timeout = setTimeout(() => toast.classList.remove('show'), 3000);
         }
+        
+        console.log('🔄 Versão do site: {{ versao }}');
     </script>
 </body>
 </html>
